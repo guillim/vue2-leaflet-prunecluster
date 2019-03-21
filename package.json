@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -p"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guillim/vue2-leaflet-prunecluster.git"
+  },
   "keywords": [
     "leaflet",
     "vue",
