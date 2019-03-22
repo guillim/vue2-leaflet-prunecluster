@@ -33,6 +33,11 @@ This is a [prunecluster plugin](https://github.com/SINTEF-9012/PruneCluster) ext
 
 ## Develop
 
+    ### See an example
+    ``` git clone https://github.com/guillim/vue2-leaflet-prunecluster.git vue2prune && cd vue2prune && npm install && npm run example
+    ```
+    and go to [localhost:8080](http://localhost:8080/)
+    
     ### Test: Compiles + hot-reloads
     ```
     npm install
