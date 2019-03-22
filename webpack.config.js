@@ -8,9 +8,9 @@ module.exports = {
   module: {
     rules: [
       // use babel-loader for js files
-      { test: /\.js$/, use: 'babel-loader' },
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
       // use vue-loader for .vue files
-      { test: /\.vue$/, use: 'vue-loader' }
+      { test: /\.vue$/, exclude: /node_modules/, loader: 'vue-loader' }
     ]
   },
   // default for pretty much every project
