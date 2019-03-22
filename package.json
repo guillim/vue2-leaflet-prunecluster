@@ -1,6 +1,6 @@
 {
   "name": "vue2-leaflet-prunecluster",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a prunecluster plugin extension for vue2-leaflet package",
   "main": "src/main.js",
   "scripts": {
