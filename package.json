@@ -11,10 +11,11 @@
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build  --target wc --name prune-cluster src/VuejsPruneCluster.vue",
     "lint": "vue-cli-service lint",
     "example": "vue-cli-service serve 'src/mainExample.js'"
   },
+  "main": "dist/prune-cluster.min.js",
   "keywords": [
     "leaflet",
     "vue",
