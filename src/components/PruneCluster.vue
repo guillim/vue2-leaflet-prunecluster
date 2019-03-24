@@ -5,6 +5,7 @@
 <script>
 import L from 'leaflet';
 import { PruneCluster, PruneClusterForLeaflet } from '../utilsPruneCluster.js'
+import iconFileDefault from '../assets/default_icon_pin.svg';
 
 export default {
   name: "PruneCluster",
@@ -13,7 +14,7 @@ export default {
     'items',
     'iconSizeBig',
     'iconSizeNormal',
-    'iconUrl'
+    'iconFile'
   ],
 
   data() {
@@ -34,9 +35,8 @@ export default {
       return (typeof i === 'number') ? [i, i] : [49, 49]
     },
     iconUrlOrDefault(){
-      let i = this.iconUrl
-      // let i = JSON.parse(JSON.stringify(this.iconUrl))
-      return (typeof i === 'string') ? i : '/public/default_icon_pin.svg'
+      let i = this.iconFile
+      return (i) ? i : iconFileDefault
     },
   },
   mounted(){
@@ -57,7 +57,7 @@ export default {
       iconUrl: this.iconUrlOrDefault,
       iconSize: iconBigSize,
     })
-console.log(this.iconUrlOrDefault);
+
     // we configure the onClick option
     this.pruneCluster.PrepareLeafletMarker = function(leafletMarker, data) {
       leafletMarker.setIcon( smallIcon );
