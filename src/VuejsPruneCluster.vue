@@ -1,28 +1,28 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
     <PruneCluster
-    msg="Welcome to Your Vue.js App"
-    items=items
-    mapRef=mapRef
+    :items=items
+    :mapRef=mapRef
+    :setIcon=setIcon
+    @clickOnItem="handleClick"
     />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import PruneCluster from './components/PruneCluster.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
     PruneCluster
   },
   props:[
     'items',
-    'mapRef'
+    'mapRef',
+    'setIcon',
+    'handleClick'
   ],
 }
 </script>
