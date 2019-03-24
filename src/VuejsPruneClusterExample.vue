@@ -24,7 +24,7 @@
     msg="Welcome to Your Vue.js App"
     :items=itemsOrDefault
     :mapRef="this.$refs"
-    :iconFile=iconFileData
+    :setIcon=setIcon
     @clickOnItem="handleClick"
 
     />
@@ -63,11 +63,9 @@ export default {
       center: L.latLng(47.413220, -0.919482),
       // bounds: L.latLngBounds({ 'lat': 51.476483373501964, 'lng': -0.14668464136775586 }, { 'lat': 51.52948330894063, 'lng': -0.019140238291583955 }),
       itemsOrDefault: undefined,
-      iconFileData:undefined
     }
   },
   mounted(){
-    this.iconFileData = iconFile
     this.itemsOrDefault = (!this.items)
     ? [
       { lng: -1.219482, lat: 47.413220, id: '65y' },
@@ -84,9 +82,24 @@ export default {
     : this.items
 
   },
+  computed:{
+    setIcon() {
+        return L.icon({
+        iconUrl: iconFile,
+        iconSize: [29, 29],
+      })
+    }
+  },
   methods: {
-    handleClick(){
-      console.log('clicked');
+    handleClick(item,leafletMarker,pruneCluster){
+      console.log('clicked',item);
+      leafletMarker.setIcon( this.bigIcon() )
+    },
+    bigIcon(){
+      return L.icon({
+        iconUrl: iconFile,
+        iconSize: [49, 49],
+      })
     }
   }
 }
