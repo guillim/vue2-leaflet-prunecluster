@@ -21,12 +21,10 @@
      />
 
     <PruneCluster
-    msg="Welcome to Your Vue.js App"
     :items=itemsOrDefault
     :mapRef="this.$refs"
     :setIcon=setIcon
     @clickOnItem="handleClick"
-
     />
 
     </l-map>
