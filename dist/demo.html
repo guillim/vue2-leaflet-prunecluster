@@ -1,8 +1,19 @@
 <meta charset="utf-8">
 <title>prune-cluster demo</title>
 <script src="https://unpkg.com/vue"></script>
-<script src="./prune-cluster.js"></script>
+<script src="./prune-cluster.umd.js"></script>
+
+<link rel="stylesheet" href="./prune-cluster.css">
 
 
-<prune-cluster></prune-cluster>
+<div id="app">
+  <demo></demo>
+</div>
 
+<script>
+new Vue({
+  components: {
+    demo: prune-cluster
+  }
+}).$mount('#app')
+</script>

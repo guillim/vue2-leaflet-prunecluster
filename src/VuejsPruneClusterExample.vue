@@ -1,13 +1,14 @@
 <template>
   <div id="app" class="map">
-    <div class="container" style="height: 20%; background-color:yellow">
+    <div class="container" style="height: 40%; background-color:yellow">
       <img alt="Vue logo" src="./assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js App EXAMPLE"/>
+      <button @click="addItems"> see items on the map </button>
     </div>
 
     <l-map
     ref='map'
-    style="height: 80%; background-color:black"
+    style="height: 60%; background-color:black"
     :zoom="zoom"
     :center="center"
     >
@@ -47,10 +48,6 @@ export default {
     LMap,
     LTileLayer
   },
-  props:[
-    'items',
-    'mapRef'
-  ],
   data(){
     return {
       name: 'OpenStreetMap',
@@ -62,23 +59,6 @@ export default {
       // bounds: L.latLngBounds({ 'lat': 51.476483373501964, 'lng': -0.14668464136775586 }, { 'lat': 51.52948330894063, 'lng': -0.019140238291583955 }),
       itemsOrDefault: undefined,
     }
-  },
-  mounted(){
-    this.itemsOrDefault = (!this.items)
-    ? [
-      { lng: -1.219482, lat: 47.413220, id: '65y' },
-      { lng: -1.571045, lat: 47.457809, id: '65y' },
-      { lng: -1.560059, lat: 47.739323, id: '65y' },
-      { lng: -0.922852, lat: 47.886881, id: '65y' },
-      { lng: 0.439453, lat: 47.613570, id: '65y' },
-      { lng: -0.571289, lat: 47.487513, id: '65y' },
-      { lng: -0.615234, lat: 47.680183, id: '65y' },
-      { lng: -0.812988, lat: 47.724545, id: '65y' },
-      { lng: -1.054688, lat: 47.680183, id: '65y' },
-      { lng: -1.219482, lat: 47.413220, id: '65y' }
-    ]
-    : this.items
-
   },
   computed:{
     setIcon() {
@@ -98,6 +78,21 @@ export default {
         iconUrl: iconFile,
         iconSize: [49, 49],
       })
+    },
+    addItems(){
+      this.itemsOrDefault =
+       [
+        { lng: -1.219482, lat: 47.413220, id: '65y' },
+        { lng: -1.571045, lat: 47.457809, id: '65y' },
+        { lng: -1.560059, lat: 47.739323, id: '65y' },
+        { lng: -0.922852, lat: 47.886881, id: '65y' },
+        { lng: 0.439453, lat: 47.613570, id: '65y' },
+        { lng: -0.571289, lat: 47.487513, id: '65y' },
+        { lng: -0.615234, lat: 47.680183, id: '65y' },
+        { lng: -0.812988, lat: 47.724545, id: '65y' },
+        { lng: -1.054688, lat: 47.680183, id: '65y' },
+        { lng: -1.219482, lat: 47.413220, id: '65y' }
+      ]
     }
   }
 }

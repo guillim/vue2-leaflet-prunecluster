@@ -5,18 +5,19 @@
 <script>
 import L from 'leaflet';
 import { PruneCluster, PruneClusterForLeaflet } from '../utilsPruneCluster.js'
-import iconFileDefault from '../assets/default_icon_pin.svg';
+import iconFileDefault from 'leaflet/dist/images/marker-icon.png';
 
+const props = [
+  'mapRef',
+  'items',
+  'setIcon',
+];
 export default {
   name: "PruneCluster",
-  props: [
-    'mapRef',
-    'items',
-    'setIcon'
-  ],
-
+  props,
   data() {
     return {
+      itemsOrDefault: [],
       pruneCluster: undefined,
       selectedItem: undefined,
     };
@@ -92,7 +93,6 @@ export default {
     },
   },
   mounted(){
-    // console.log(" - - CustomMarkers / mounted... ")
     this.pruneCluster = new PruneClusterForLeaflet();
 
     const emitDataFunction = this.emitItem
@@ -121,13 +121,13 @@ export default {
     let map = this.mapRef.map.mapObject;
     map.addLayer(this.pruneCluster);
 
-    // for the example, to show something even though there are no items
     this.reDraw()
   },
 
   watch: {
     items(){
-      if (this.items && this.items.length > 0) {
+      if (this.items && Array.isArray(this.items)) {
+        this.itemsOrDefault = this.items
         this.reDraw()
       }
     }
@@ -147,11 +147,13 @@ export default {
 
       pruneCluster.RemoveMarkers();
 
-      console.log('removed all the markers - number of markers to map: ',this.items.length);
-      this.items.forEach((item) => {
-        let marker = this.createMarker(item)
-        pruneCluster.RegisterMarker(marker);
-      })
+      // console.log('removed all the markers - number of markers to map: ',this.items.length);
+      if(this.itemsOrDefault && Array.isArray(this.itemsOrDefault)){
+          this.itemsOrDefault.forEach((item) => {
+            let marker = this.createMarker(item)
+            pruneCluster.RegisterMarker(marker);
+          })
+      }
 
     },
 

@@ -1,3 +1,4 @@
+module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -81,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "5a74");
+/******/ 	return __webpack_require__(__webpack_require__.s = "fb15");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -242,6 +243,17 @@ module.exports = (
 
 /***/ }),
 
+/***/ "1af6":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
+var $export = __webpack_require__("63b6");
+
+$export($export.S, 'Array', { isArray: __webpack_require__("9003") });
+
+
+/***/ }),
+
 /***/ "1bc3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -295,89 +307,6 @@ var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
-
-
-/***/ }),
-
-/***/ "2350":
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
 
 
 /***/ }),
@@ -631,117 +560,6 @@ exports.f = {}.propertyIsEnumerable;
 
 /***/ }),
 
-/***/ "35d6":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/vue-style-loader/lib/listToStyles.js
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-// CONCATENATED MODULE: ./node_modules/vue-style-loader/lib/addStylesShadow.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return addStylesToShadowDOM; });
-
-
-function addStylesToShadowDOM (parentId, list, shadowRoot) {
-  var styles = listToStyles(parentId, list)
-  addStyles(styles, shadowRoot)
-}
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-function addStyles (styles /* Array<StyleObject> */, shadowRoot) {
-  const injectedStyles =
-    shadowRoot._injectedStyles ||
-    (shadowRoot._injectedStyles = {})
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var style = injectedStyles[item.id]
-    if (!style) {
-      for (var j = 0; j < item.parts.length; j++) {
-        addStyle(item.parts[j], shadowRoot)
-      }
-      injectedStyles[item.id] = true
-    }
-  }
-}
-
-function createStyleElement (shadowRoot) {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  shadowRoot.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */, shadowRoot) {
-  var styleElement = createStyleElement(shadowRoot)
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-
 /***/ "35e8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -939,1914 +757,6 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 /***/ }),
 
-/***/ "5a74":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
-// This file is imported into lib/wc client bundles.
-
-if (typeof window !== 'undefined') {
-  var setPublicPath_i
-  if ((setPublicPath_i = window.document.currentScript) && (setPublicPath_i = setPublicPath_i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
-    __webpack_require__.p = setPublicPath_i[1] // eslint-disable-line
-  }
-}
-
-// Indicate to webpack that this file can be concatenated
-/* harmony default export */ var setPublicPath = (null);
-
-// EXTERNAL MODULE: external "Vue"
-var external_Vue_ = __webpack_require__("8bbf");
-var external_Vue_default = /*#__PURE__*/__webpack_require__.n(external_Vue_);
-
-// CONCATENATED MODULE: ./node_modules/@vue/web-component-wrapper/dist/vue-wc-wrapper.js
-const camelizeRE = /-(\w)/g;
-const camelize = str => {
-  return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
-};
-
-const hyphenateRE = /\B([A-Z])/g;
-const hyphenate = str => {
-  return str.replace(hyphenateRE, '-$1').toLowerCase()
-};
-
-function getInitialProps (propsList) {
-  const res = {};
-  propsList.forEach(key => {
-    res[key] = undefined;
-  });
-  return res
-}
-
-function injectHook (options, key, hook) {
-  options[key] = [].concat(options[key] || []);
-  options[key].unshift(hook);
-}
-
-function callHooks (vm, hook) {
-  if (vm) {
-    const hooks = vm.$options[hook] || [];
-    hooks.forEach(hook => {
-      hook.call(vm);
-    });
-  }
-}
-
-function createCustomEvent (name, args) {
-  return new CustomEvent(name, {
-    bubbles: false,
-    cancelable: false,
-    detail: args
-  })
-}
-
-const isBoolean = val => /function Boolean/.test(String(val));
-const isNumber = val => /function Number/.test(String(val));
-
-function convertAttributeValue (value, name, { type } = {}) {
-  if (isBoolean(type)) {
-    if (value === 'true' || value === 'false') {
-      return value === 'true'
-    }
-    if (value === '' || value === name) {
-      return true
-    }
-    return value != null
-  } else if (isNumber(type)) {
-    const parsed = parseFloat(value, 10);
-    return isNaN(parsed) ? value : parsed
-  } else {
-    return value
-  }
-}
-
-function toVNodes (h, children) {
-  const res = [];
-  for (let i = 0, l = children.length; i < l; i++) {
-    res.push(toVNode(h, children[i]));
-  }
-  return res
-}
-
-function toVNode (h, node) {
-  if (node.nodeType === 3) {
-    return node.data.trim() ? node.data : null
-  } else if (node.nodeType === 1) {
-    const data = {
-      attrs: getAttributes(node),
-      domProps: {
-        innerHTML: node.innerHTML
-      }
-    };
-    if (data.attrs.slot) {
-      data.slot = data.attrs.slot;
-      delete data.attrs.slot;
-    }
-    return h(node.tagName, data)
-  } else {
-    return null
-  }
-}
-
-function getAttributes (node) {
-  const res = {};
-  for (let i = 0, l = node.attributes.length; i < l; i++) {
-    const attr = node.attributes[i];
-    res[attr.nodeName] = attr.nodeValue;
-  }
-  return res
-}
-
-function wrap (Vue, Component) {
-  const isAsync = typeof Component === 'function' && !Component.cid;
-  let isInitialized = false;
-  let hyphenatedPropsList;
-  let camelizedPropsList;
-  let camelizedPropsMap;
-
-  function initialize (Component) {
-    if (isInitialized) return
-
-    const options = typeof Component === 'function'
-      ? Component.options
-      : Component;
-
-    // extract props info
-    const propsList = Array.isArray(options.props)
-      ? options.props
-      : Object.keys(options.props || {});
-    hyphenatedPropsList = propsList.map(hyphenate);
-    camelizedPropsList = propsList.map(camelize);
-    const originalPropsAsObject = Array.isArray(options.props) ? {} : options.props || {};
-    camelizedPropsMap = camelizedPropsList.reduce((map, key, i) => {
-      map[key] = originalPropsAsObject[propsList[i]];
-      return map
-    }, {});
-
-    // proxy $emit to native DOM events
-    injectHook(options, 'beforeCreate', function () {
-      const emit = this.$emit;
-      this.$emit = (name, ...args) => {
-        this.$root.$options.customElement.dispatchEvent(createCustomEvent(name, args));
-        return emit.call(this, name, ...args)
-      };
-    });
-
-    injectHook(options, 'created', function () {
-      // sync default props values to wrapper on created
-      camelizedPropsList.forEach(key => {
-        this.$root.props[key] = this[key];
-      });
-    });
-
-    // proxy props as Element properties
-    camelizedPropsList.forEach(key => {
-      Object.defineProperty(CustomElement.prototype, key, {
-        get () {
-          return this._wrapper.props[key]
-        },
-        set (newVal) {
-          this._wrapper.props[key] = newVal;
-        },
-        enumerable: false,
-        configurable: true
-      });
-    });
-
-    isInitialized = true;
-  }
-
-  function syncAttribute (el, key) {
-    const camelized = camelize(key);
-    const value = el.hasAttribute(key) ? el.getAttribute(key) : undefined;
-    el._wrapper.props[camelized] = convertAttributeValue(
-      value,
-      key,
-      camelizedPropsMap[camelized]
-    );
-  }
-
-  class CustomElement extends HTMLElement {
-    constructor () {
-      super();
-      this.attachShadow({ mode: 'open' });
-
-      const wrapper = this._wrapper = new Vue({
-        name: 'shadow-root',
-        customElement: this,
-        shadowRoot: this.shadowRoot,
-        data () {
-          return {
-            props: {},
-            slotChildren: []
-          }
-        },
-        render (h) {
-          return h(Component, {
-            ref: 'inner',
-            props: this.props
-          }, this.slotChildren)
-        }
-      });
-
-      // Use MutationObserver to react to future attribute & slot content change
-      const observer = new MutationObserver(mutations => {
-        let hasChildrenChange = false;
-        for (let i = 0; i < mutations.length; i++) {
-          const m = mutations[i];
-          if (isInitialized && m.type === 'attributes' && m.target === this) {
-            syncAttribute(this, m.attributeName);
-          } else {
-            hasChildrenChange = true;
-          }
-        }
-        if (hasChildrenChange) {
-          wrapper.slotChildren = Object.freeze(toVNodes(
-            wrapper.$createElement,
-            this.childNodes
-          ));
-        }
-      });
-      observer.observe(this, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true
-      });
-    }
-
-    get vueComponent () {
-      return this._wrapper.$refs.inner
-    }
-
-    connectedCallback () {
-      const wrapper = this._wrapper;
-      if (!wrapper._isMounted) {
-        // initialize attributes
-        const syncInitialAttributes = () => {
-          wrapper.props = getInitialProps(camelizedPropsList);
-          hyphenatedPropsList.forEach(key => {
-            syncAttribute(this, key);
-          });
-        };
-
-        if (isInitialized) {
-          syncInitialAttributes();
-        } else {
-          // async & unresolved
-          Component().then(resolved => {
-            if (resolved.__esModule || resolved[Symbol.toStringTag] === 'Module') {
-              resolved = resolved.default;
-            }
-            initialize(resolved);
-            syncInitialAttributes();
-          });
-        }
-        // initialize children
-        wrapper.slotChildren = Object.freeze(toVNodes(
-          wrapper.$createElement,
-          this.childNodes
-        ));
-        wrapper.$mount();
-        this.shadowRoot.appendChild(wrapper.$el);
-      } else {
-        callHooks(this.vueComponent, 'activated');
-      }
-    }
-
-    disconnectedCallback () {
-      callHooks(this.vueComponent, 'deactivated');
-    }
-  }
-
-  if (!isAsync) {
-    initialize(Component);
-  }
-
-  return CustomElement
-}
-
-/* harmony default export */ var vue_wc_wrapper = (wrap);
-
-// EXTERNAL MODULE: ./node_modules/css-loader/lib/css-base.js
-var css_base = __webpack_require__("2350");
-
-// EXTERNAL MODULE: ./node_modules/vue-style-loader/lib/addStylesShadow.js + 1 modules
-var addStylesShadow = __webpack_require__("35d6");
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1dcdf57b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/VuejsPruneCluster.vue?vue&type=template&id=75d42520&shadow
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('img',{attrs:{"alt":"Vue logo","src":__webpack_require__("cf05")}}),_c('PruneCluster',{attrs:{"items":_vm.items,"mapRef":_vm.mapRef,"setIcon":_vm.setIcon},on:{"clickOnItem":_vm.handleClick}})],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/VuejsPruneCluster.vue?vue&type=template&id=75d42520&shadow
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1dcdf57b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PruneCluster.vue?vue&type=template&id=864aaf9e&
-var PruneClustervue_type_template_id_864aaf9e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p')}
-var PruneClustervue_type_template_id_864aaf9e_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/PruneCluster.vue?vue&type=template&id=864aaf9e&
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/keys.js
-var keys = __webpack_require__("a4bb");
-var keys_default = /*#__PURE__*/__webpack_require__.n(keys);
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
-var es6_array_find = __webpack_require__("7514");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js
-var stringify = __webpack_require__("f499");
-var stringify_default = /*#__PURE__*/__webpack_require__.n(stringify);
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.fill.js
-var es6_array_fill = __webpack_require__("6c7b");
-
-// EXTERNAL MODULE: ./node_modules/leaflet/dist/leaflet-src.js
-var leaflet_src = __webpack_require__("e11e");
-var leaflet_src_default = /*#__PURE__*/__webpack_require__.n(leaflet_src);
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __webpack_require__("c5f6");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.sort.js
-var es6_array_sort = __webpack_require__("55dd");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/create.js
-var create = __webpack_require__("4aa6");
-var create_default = /*#__PURE__*/__webpack_require__.n(create);
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/set-prototype-of.js
-var set_prototype_of = __webpack_require__("4d16");
-var set_prototype_of_default = /*#__PURE__*/__webpack_require__.n(set_prototype_of);
-
-// CONCATENATED MODULE: ./src/utilsPruneCluster.js
-
-
-
-
-
-var __extends = undefined && undefined.__extends || function () {
-  var extendStatics = set_prototype_of_default.a || {
-    __proto__: []
-  } instanceof Array && function (d, b) {
-    d.__proto__ = b;
-  } || function (d, b) {
-    for (var p in b) {
-      if (b.hasOwnProperty(p)) d[p] = b[p];
-    }
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? create_default()(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var PruneCluster;
-
-(function (PruneCluster_1) {
-  var Point = function () {
-    function Point() {}
-
-    return Point;
-  }();
-
-  PruneCluster_1.Point = Point;
-
-  var ClusterObject = function () {
-    function ClusterObject() {}
-
-    return ClusterObject;
-  }();
-
-  PruneCluster_1.ClusterObject = ClusterObject;
-  var hashCodeCounter = 1;
-  var maxHashCodeValue = Math.pow(2, 53) - 1;
-
-  var Marker = function (_super) {
-    __extends(Marker, _super);
-
-    function Marker(lat, lng, data, category, weight, filtered) {
-      if (data === void 0) {
-        data = {};
-      }
-
-      if (weight === void 0) {
-        weight = 1;
-      }
-
-      if (filtered === void 0) {
-        filtered = false;
-      }
-
-      var _this = _super.call(this) || this;
-
-      _this.data = data;
-      _this.position = {
-        lat: +lat,
-        lng: +lng
-      };
-      _this.weight = weight;
-      _this.category = category;
-      _this.filtered = filtered;
-      _this.hashCode = hashCodeCounter++;
-      return _this;
-    }
-
-    Marker.prototype.Move = function (lat, lng) {
-      this.position.lat = +lat;
-      this.position.lng = +lng;
-    };
-
-    Marker.prototype.SetData = function (data) {
-      for (var key in data) {
-        this.data[key] = data[key];
-      }
-    };
-
-    return Marker;
-  }(ClusterObject);
-
-  PruneCluster_1.Marker = Marker;
-
-  var Cluster = function (_super) {
-    __extends(Cluster, _super);
-
-    function Cluster(marker) {
-      var _this = _super.call(this) || this;
-
-      _this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
-      _this.data = {};
-
-      if (!marker) {
-        _this.hashCode = 1;
-
-        if (Cluster.ENABLE_MARKERS_LIST) {
-          _this._clusterMarkers = [];
-        }
-
-        return _this;
-      }
-
-      if (Cluster.ENABLE_MARKERS_LIST) {
-        _this._clusterMarkers = [marker];
-      }
-
-      _this.lastMarker = marker;
-      _this.hashCode = 31 + marker.hashCode;
-      _this.population = 1;
-
-      if (marker.category !== undefined) {
-        _this.stats[marker.category] = 1;
-      }
-
-      _this.totalWeight = marker.weight;
-      _this.position = {
-        lat: marker.position.lat,
-        lng: marker.position.lng
-      };
-      _this.averagePosition = {
-        lat: marker.position.lat,
-        lng: marker.position.lng
-      };
-      return _this;
-    }
-
-    Cluster.prototype.AddMarker = function (marker) {
-      if (Cluster.ENABLE_MARKERS_LIST) {
-        this._clusterMarkers.push(marker);
-      }
-
-      var h = this.hashCode;
-      h = (h << 5) - h + marker.hashCode;
-
-      if (h >= maxHashCodeValue) {
-        this.hashCode = h % maxHashCodeValue;
-      } else {
-        this.hashCode = h;
-      }
-
-      this.lastMarker = marker;
-      var weight = marker.weight,
-          currentTotalWeight = this.totalWeight,
-          newWeight = weight + currentTotalWeight;
-      this.averagePosition.lat = (this.averagePosition.lat * currentTotalWeight + marker.position.lat * weight) / newWeight;
-      this.averagePosition.lng = (this.averagePosition.lng * currentTotalWeight + marker.position.lng * weight) / newWeight;
-      ++this.population;
-      this.totalWeight = newWeight;
-
-      if (marker.category !== undefined) {
-        this.stats[marker.category] = this.stats[marker.category] + 1 || 1;
-      }
-    };
-
-    Cluster.prototype.Reset = function () {
-      this.hashCode = 1;
-      this.lastMarker = undefined;
-      this.population = 0;
-      this.totalWeight = 0;
-      this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
-
-      if (Cluster.ENABLE_MARKERS_LIST) {
-        this._clusterMarkers = [];
-      }
-    };
-
-    Cluster.prototype.ComputeBounds = function (cluster) {
-      var proj = cluster.Project(this.position.lat, this.position.lng);
-      var size = cluster.Size;
-      var nbX = Math.floor(proj.x / size),
-          nbY = Math.floor(proj.y / size),
-          startX = nbX * size,
-          startY = nbY * size;
-      var a = cluster.UnProject(startX, startY),
-          b = cluster.UnProject(startX + size, startY + size);
-      this.bounds = {
-        minLat: b.lat,
-        maxLat: a.lat,
-        minLng: a.lng,
-        maxLng: b.lng
-      };
-    };
-
-    Cluster.prototype.GetClusterMarkers = function () {
-      return this._clusterMarkers;
-    };
-
-    Cluster.prototype.ApplyCluster = function (newCluster) {
-      this.hashCode = this.hashCode * 41 + newCluster.hashCode * 43;
-
-      if (this.hashCode > maxHashCodeValue) {
-        this.hashCode = this.hashCode = maxHashCodeValue;
-      }
-
-      var weight = newCluster.totalWeight,
-          currentTotalWeight = this.totalWeight,
-          newWeight = weight + currentTotalWeight;
-      this.averagePosition.lat = (this.averagePosition.lat * currentTotalWeight + newCluster.averagePosition.lat * weight) / newWeight;
-      this.averagePosition.lng = (this.averagePosition.lng * currentTotalWeight + newCluster.averagePosition.lng * weight) / newWeight;
-      this.population += newCluster.population;
-      this.totalWeight = newWeight;
-      this.bounds.minLat = Math.min(this.bounds.minLat, newCluster.bounds.minLat);
-      this.bounds.minLng = Math.min(this.bounds.minLng, newCluster.bounds.minLng);
-      this.bounds.maxLat = Math.max(this.bounds.maxLat, newCluster.bounds.maxLat);
-      this.bounds.maxLng = Math.max(this.bounds.maxLng, newCluster.bounds.maxLng);
-
-      for (var category in newCluster.stats) {
-        if (newCluster.stats.hasOwnProperty(category)) {
-          if (this.stats.hasOwnProperty(category)) {
-            this.stats[category] += newCluster.stats[category];
-          } else {
-            this.stats[category] = newCluster.stats[category];
-          }
-        }
-      }
-
-      if (Cluster.ENABLE_MARKERS_LIST) {
-        this._clusterMarkers = this._clusterMarkers.concat(newCluster.GetClusterMarkers());
-      }
-    };
-
-    Cluster.ENABLE_MARKERS_LIST = false;
-    return Cluster;
-  }(ClusterObject);
-
-  PruneCluster_1.Cluster = Cluster;
-
-  function checkPositionInsideBounds(a, b) {
-    return a.lat >= b.minLat && a.lat <= b.maxLat && a.lng >= b.minLng && a.lng <= b.maxLng;
-  }
-
-  function insertionSort(list) {
-    for (var i = 1, j, tmp, tmpLng, length = list.length; i < length; ++i) {
-      tmp = list[i];
-      tmpLng = tmp.position.lng;
-
-      for (j = i - 1; j >= 0 && list[j].position.lng > tmpLng; --j) {
-        list[j + 1] = list[j];
-      }
-
-      list[j + 1] = tmp;
-    }
-  }
-
-  function shouldUseInsertionSort(total, nbChanges) {
-    if (nbChanges > 300) {
-      return false;
-    } else {
-      return nbChanges / total < 0.2;
-    }
-  }
-
-  var PruneCluster = function () {
-    function PruneCluster() {
-      this._markers = [];
-      this._nbChanges = 0;
-      this._clusters = [];
-      this.Size = 166;
-      this.ViewPadding = 0.2;
-    }
-
-    PruneCluster.prototype.RegisterMarker = function (marker) {
-      if (marker._removeFlag) {
-        delete marker._removeFlag;
-      }
-
-      this._markers.push(marker);
-
-      this._nbChanges += 1;
-    };
-
-    PruneCluster.prototype.RegisterMarkers = function (markers) {
-      var _this = this;
-
-      markers.forEach(function (marker) {
-        _this.RegisterMarker(marker);
-      });
-    };
-
-    PruneCluster.prototype._sortMarkers = function () {
-      var markers = this._markers,
-          length = markers.length;
-
-      if (this._nbChanges && !shouldUseInsertionSort(length, this._nbChanges)) {
-        this._markers.sort(function (a, b) {
-          return a.position.lng - b.position.lng;
-        });
-      } else {
-        insertionSort(markers);
-      }
-
-      this._nbChanges = 0;
-    };
-
-    PruneCluster.prototype._sortClusters = function () {
-      insertionSort(this._clusters);
-    };
-
-    PruneCluster.prototype._indexLowerBoundLng = function (lng) {
-      var markers = this._markers,
-          it,
-          step,
-          first = 0,
-          count = markers.length;
-
-      while (count > 0) {
-        step = Math.floor(count / 2);
-        it = first + step;
-
-        if (markers[it].position.lng < lng) {
-          first = ++it;
-          count -= step + 1;
-        } else {
-          count = step;
-        }
-      }
-
-      return first;
-    };
-
-    PruneCluster.prototype._resetClusterViews = function () {
-      for (var i = 0, l = this._clusters.length; i < l; ++i) {
-        var cluster = this._clusters[i];
-        cluster.Reset();
-        cluster.ComputeBounds(this);
-      }
-    };
-
-    PruneCluster.prototype.ProcessView = function (bounds) {
-      var heightBuffer = Math.abs(bounds.maxLat - bounds.minLat) * this.ViewPadding,
-          widthBuffer = Math.abs(bounds.maxLng - bounds.minLng) * this.ViewPadding;
-      var extendedBounds = {
-        minLat: bounds.minLat - heightBuffer - heightBuffer,
-        maxLat: bounds.maxLat + heightBuffer + heightBuffer,
-        minLng: bounds.minLng - widthBuffer - widthBuffer,
-        maxLng: bounds.maxLng + widthBuffer + widthBuffer
-      };
-
-      this._sortMarkers();
-
-      this._resetClusterViews();
-
-      var firstIndex = this._indexLowerBoundLng(extendedBounds.minLng);
-
-      var markers = this._markers,
-          clusters = this._clusters;
-      var workingClusterList = clusters.slice(0);
-
-      for (var i = firstIndex, l = markers.length; i < l; ++i) {
-        var marker = markers[i],
-            markerPosition = marker.position;
-
-        if (markerPosition.lng > extendedBounds.maxLng) {
-          break;
-        }
-
-        if (markerPosition.lat > extendedBounds.minLat && markerPosition.lat < extendedBounds.maxLat && !marker.filtered) {
-          var clusterFound = false,
-              cluster;
-
-          for (var j = 0, ll = workingClusterList.length; j < ll; ++j) {
-            cluster = workingClusterList[j];
-
-            if (cluster.bounds.maxLng < marker.position.lng) {
-              workingClusterList.splice(j, 1);
-              --j;
-              --ll;
-              continue;
-            }
-
-            if (checkPositionInsideBounds(markerPosition, cluster.bounds)) {
-              cluster.AddMarker(marker);
-              clusterFound = true;
-              break;
-            }
-          }
-
-          if (!clusterFound) {
-            cluster = new Cluster(marker);
-            cluster.ComputeBounds(this);
-            clusters.push(cluster);
-            workingClusterList.push(cluster);
-          }
-        }
-      }
-
-      var newClustersList = [];
-
-      for (i = 0, l = clusters.length; i < l; ++i) {
-        cluster = clusters[i];
-
-        if (cluster.population > 0) {
-          newClustersList.push(cluster);
-        }
-      }
-
-      this._clusters = newClustersList;
-
-      this._sortClusters();
-
-      return this._clusters;
-    };
-
-    PruneCluster.prototype.RemoveMarkers = function (markers) {
-      if (!markers) {
-        this._markers = [];
-        return;
-      }
-
-      for (var i = 0, l = markers.length; i < l; ++i) {
-        markers[i]._removeFlag = true;
-      }
-
-      var newMarkersList = [];
-
-      for (i = 0, l = this._markers.length; i < l; ++i) {
-        if (!this._markers[i]._removeFlag) {
-          newMarkersList.push(this._markers[i]);
-        } else {
-          delete this._markers[i]._removeFlag;
-        }
-      }
-
-      this._markers = newMarkersList;
-    };
-
-    PruneCluster.prototype.FindMarkersInArea = function (area) {
-      var aMinLat = area.minLat,
-          aMaxLat = area.maxLat,
-          aMinLng = area.minLng,
-          aMaxLng = area.maxLng,
-          markers = this._markers,
-          result = [];
-
-      var firstIndex = this._indexLowerBoundLng(aMinLng);
-
-      for (var i = firstIndex, l = markers.length; i < l; ++i) {
-        var pos = markers[i].position;
-
-        if (pos.lng > aMaxLng) {
-          break;
-        }
-
-        if (pos.lat >= aMinLat && pos.lat <= aMaxLat && pos.lng >= aMinLng) {
-          result.push(markers[i]);
-        }
-      }
-
-      return result;
-    };
-
-    PruneCluster.prototype.ComputeBounds = function (markers, withFiltered) {
-      if (withFiltered === void 0) {
-        withFiltered = true;
-      }
-
-      if (!markers || !markers.length) {
-        return null;
-      }
-
-      var rMinLat = Number.MAX_VALUE,
-          rMaxLat = -Number.MAX_VALUE,
-          rMinLng = Number.MAX_VALUE,
-          rMaxLng = -Number.MAX_VALUE;
-
-      for (var i = 0, l = markers.length; i < l; ++i) {
-        if (!withFiltered && markers[i].filtered) {
-          continue;
-        }
-
-        var pos = markers[i].position;
-        if (pos.lat < rMinLat) rMinLat = pos.lat;
-        if (pos.lat > rMaxLat) rMaxLat = pos.lat;
-        if (pos.lng < rMinLng) rMinLng = pos.lng;
-        if (pos.lng > rMaxLng) rMaxLng = pos.lng;
-      }
-
-      return {
-        minLat: rMinLat,
-        maxLat: rMaxLat,
-        minLng: rMinLng,
-        maxLng: rMaxLng
-      };
-    };
-
-    PruneCluster.prototype.FindMarkersBoundsInArea = function (area) {
-      return this.ComputeBounds(this.FindMarkersInArea(area));
-    };
-
-    PruneCluster.prototype.ComputeGlobalBounds = function (withFiltered) {
-      if (withFiltered === void 0) {
-        withFiltered = true;
-      }
-
-      return this.ComputeBounds(this._markers, withFiltered);
-    };
-
-    PruneCluster.prototype.GetMarkers = function () {
-      return this._markers;
-    };
-
-    PruneCluster.prototype.GetPopulation = function () {
-      return this._markers.length;
-    };
-
-    PruneCluster.prototype.ResetClusters = function () {
-      this._clusters = [];
-    };
-
-    return PruneCluster;
-  }();
-
-  PruneCluster_1.PruneCluster = PruneCluster;
-})(PruneCluster || (PruneCluster = {})); // var PruneCluster;
-// (function (PruneCluster) {
-// })(PruneCluster || (PruneCluster = {}));
-
-
-var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
-  initialize: function initialize(size, clusterMargin) {
-    var _this = this;
-
-    if (size === void 0) {
-      size = 120;
-    }
-
-    if (clusterMargin === void 0) {
-      clusterMargin = 20;
-    }
-
-    this.Cluster = new PruneCluster.PruneCluster();
-    this.Cluster.Size = size;
-    this.clusterMargin = Math.min(clusterMargin, size / 4);
-
-    this.Cluster.Project = function (lat, lng) {
-      return _this._map.project(new L.LatLng(lat, lng), Math.floor(_this._map.getZoom()));
-    };
-
-    this.Cluster.UnProject = function (x, y) {
-      return _this._map.unproject(new L.Point(x, y), Math.floor(_this._map.getZoom()));
-    };
-
-    this._objectsOnMap = [];
-    this.spiderfier = new PruneClusterLeafletSpiderfier(this);
-    this._hardMove = false;
-    this._resetIcons = false;
-    this._removeTimeoutId = 0;
-    this._markersRemoveListTimeout = [];
-  },
-  RegisterMarker: function RegisterMarker(marker) {
-    this.Cluster.RegisterMarker(marker);
-  },
-  RegisterMarkers: function RegisterMarkers(markers) {
-    this.Cluster.RegisterMarkers(markers);
-  },
-  RemoveMarkers: function RemoveMarkers(markers) {
-    this.Cluster.RemoveMarkers(markers);
-  },
-  BuildLeafletCluster: function BuildLeafletCluster(cluster, position) {
-    var _this = this;
-
-    var m = new L.Marker(position, {
-      icon: this.BuildLeafletClusterIcon(cluster)
-    });
-    m._leafletClusterBounds = cluster.bounds;
-    m.on('click', function () {
-      var cbounds = m._leafletClusterBounds;
-
-      var markersArea = _this.Cluster.FindMarkersInArea(cbounds);
-
-      var b = _this.Cluster.ComputeBounds(markersArea);
-
-      if (b) {
-        var bounds = new L.LatLngBounds(new L.LatLng(b.minLat, b.maxLng), new L.LatLng(b.maxLat, b.minLng));
-
-        var zoomLevelBefore = _this._map.getZoom(),
-            zoomLevelAfter = _this._map.getBoundsZoom(bounds, false, new L.Point(20, 20));
-
-        if (zoomLevelAfter === zoomLevelBefore) {
-          var filteredBounds = [];
-
-          for (var i = 0, l = _this._objectsOnMap.length; i < l; ++i) {
-            var o = _this._objectsOnMap[i];
-
-            if (o.data._leafletMarker !== m) {
-              if (o.bounds.minLat >= cbounds.minLat && o.bounds.maxLat <= cbounds.maxLat && o.bounds.minLng >= cbounds.minLng && o.bounds.maxLng <= cbounds.maxLng) {
-                filteredBounds.push(o.bounds);
-              }
-            }
-          }
-
-          if (filteredBounds.length > 0) {
-            var newMarkersArea = [];
-            var ll = filteredBounds.length;
-
-            for (i = 0, l = markersArea.length; i < l; ++i) {
-              var markerPos = markersArea[i].position;
-              var isFiltered = false;
-
-              for (var j = 0; j < ll; ++j) {
-                var currentFilteredBounds = filteredBounds[j];
-
-                if (markerPos.lat >= currentFilteredBounds.minLat && markerPos.lat <= currentFilteredBounds.maxLat && markerPos.lng >= currentFilteredBounds.minLng && markerPos.lng <= currentFilteredBounds.maxLng) {
-                  isFiltered = true;
-                  break;
-                }
-              }
-
-              if (!isFiltered) {
-                newMarkersArea.push(markersArea[i]);
-              }
-            }
-
-            markersArea = newMarkersArea;
-          }
-
-          if (markersArea.length < 200 || zoomLevelAfter >= _this._map.getMaxZoom()) {
-            _this._map.fire('overlappingmarkers', {
-              cluster: _this,
-              markers: markersArea,
-              center: m.getLatLng(),
-              marker: m
-            });
-          } else {
-            zoomLevelAfter++;
-          }
-
-          _this._map.setView(m.getLatLng(), zoomLevelAfter);
-        } else {
-          _this._map.fitBounds(bounds);
-        }
-      }
-    });
-    return m;
-  },
-  BuildLeafletClusterIcon: function BuildLeafletClusterIcon(cluster) {
-    var c = 'prunecluster prunecluster-';
-    var iconSize = 38;
-    var maxPopulation = this.Cluster.GetPopulation();
-
-    if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
-      c += 'small';
-    } else if (cluster.population < Math.max(100, maxPopulation * 0.05)) {
-      c += 'medium';
-      iconSize = 40;
-    } else {
-      c += 'large';
-      iconSize = 44;
-    }
-
-    return new L.DivIcon({
-      html: "<div><span>" + cluster.population + "</span></div>",
-      className: c,
-      iconSize: L.point(iconSize, iconSize)
-    });
-  },
-  BuildLeafletMarker: function BuildLeafletMarker(marker, position) {
-    var m = new L.Marker(position);
-    this.PrepareLeafletMarker(m, marker.data, marker.category);
-    return m;
-  },
-  PrepareLeafletMarker: function PrepareLeafletMarker(marker, data, category) {
-    if (data.icon) {
-      if (typeof data.icon === 'function') {
-        marker.setIcon(data.icon(data, category));
-      } else {
-        marker.setIcon(data.icon);
-      }
-    }
-
-    if (data.popup) {
-      var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
-
-      if (marker.getPopup()) {
-        marker.setPopupContent(content, data.popupOptions);
-      } else {
-        marker.bindPopup(content, data.popupOptions);
-      }
-    }
-  },
-  onAdd: function onAdd(map) {
-    this._map = map;
-    map.on('movestart', this._moveStart, this);
-    map.on('moveend', this._moveEnd, this);
-    map.on('zoomend', this._zoomStart, this);
-    map.on('zoomend', this._zoomEnd, this);
-    this.ProcessView();
-    map.addLayer(this.spiderfier);
-  },
-  onRemove: function onRemove(map) {
-    map.off('movestart', this._moveStart, this);
-    map.off('moveend', this._moveEnd, this);
-    map.off('zoomend', this._zoomStart, this);
-    map.off('zoomend', this._zoomEnd, this);
-
-    for (var i = 0, l = this._objectsOnMap.length; i < l; ++i) {
-      map.removeLayer(this._objectsOnMap[i].data._leafletMarker);
-    }
-
-    this._objectsOnMap = [];
-    this.Cluster.ResetClusters();
-    map.removeLayer(this.spiderfier);
-    this._map = null;
-  },
-  _moveStart: function _moveStart() {
-    this._moveInProgress = true;
-  },
-  _moveEnd: function _moveEnd(e) {
-    this._moveInProgress = false;
-    this._hardMove = e.hard;
-    this.ProcessView();
-  },
-  _zoomStart: function _zoomStart() {
-    this._zoomInProgress = true;
-  },
-  _zoomEnd: function _zoomEnd() {
-    this._zoomInProgress = false;
-    this.ProcessView();
-  },
-  ProcessView: function ProcessView() {
-    var _this = this;
-
-    if (!this._map || this._zoomInProgress || this._moveInProgress) {
-      return;
-    }
-
-    var map = this._map,
-        bounds = map.getBounds(),
-        zoom = Math.floor(map.getZoom()),
-        marginRatio = this.clusterMargin / this.Cluster.Size,
-        resetIcons = this._resetIcons;
-    var southWest = bounds.getSouthWest(),
-        northEast = bounds.getNorthEast();
-    var clusters = this.Cluster.ProcessView({
-      minLat: southWest.lat,
-      minLng: southWest.lng,
-      maxLat: northEast.lat,
-      maxLng: northEast.lng
-    });
-    var objectsOnMap = this._objectsOnMap,
-        newObjectsOnMap = [],
-        markersOnMap = new Array(objectsOnMap.length);
-
-    for (var i = 0, l = objectsOnMap.length; i < l; ++i) {
-      var marker = objectsOnMap[i].data._leafletMarker;
-      markersOnMap[i] = marker;
-      marker._removeFromMap = true;
-    }
-
-    var clusterCreationList = [];
-    var clusterCreationListPopOne = [];
-    var opacityUpdateList = [];
-    var workingList = [];
-
-    for (i = 0, l = clusters.length; i < l; ++i) {
-      var icluster = clusters[i],
-          iclusterData = icluster.data;
-      var latMargin = (icluster.bounds.maxLat - icluster.bounds.minLat) * marginRatio,
-          lngMargin = (icluster.bounds.maxLng - icluster.bounds.minLng) * marginRatio;
-
-      for (var j = 0, ll = workingList.length; j < ll; ++j) {
-        var c = workingList[j];
-
-        if (c.bounds.maxLng < icluster.bounds.minLng) {
-          workingList.splice(j, 1);
-          --j;
-          --ll;
-          continue;
-        }
-
-        var oldMaxLng = c.averagePosition.lng + lngMargin,
-            oldMinLat = c.averagePosition.lat - latMargin,
-            oldMaxLat = c.averagePosition.lat + latMargin,
-            newMinLng = icluster.averagePosition.lng - lngMargin,
-            newMinLat = icluster.averagePosition.lat - latMargin,
-            newMaxLat = icluster.averagePosition.lat + latMargin;
-
-        if (oldMaxLng > newMinLng && oldMaxLat > newMinLat && oldMinLat < newMaxLat) {
-          iclusterData._leafletCollision = true;
-          c.ApplyCluster(icluster);
-          break;
-        }
-      }
-
-      if (!iclusterData._leafletCollision) {
-        workingList.push(icluster);
-      }
-    }
-
-    clusters.forEach(function (cluster) {
-      var m = undefined;
-      var data = cluster.data;
-
-      if (data._leafletCollision) {
-        data._leafletCollision = false;
-        data._leafletOldPopulation = 0;
-        data._leafletOldHashCode = 0;
-        return;
-      }
-
-      var position = new L.LatLng(cluster.averagePosition.lat, cluster.averagePosition.lng);
-      var oldMarker = data._leafletMarker;
-
-      if (oldMarker) {
-        if (cluster.population === 1 && data._leafletOldPopulation === 1 && cluster.hashCode === oldMarker._hashCode) {
-          if (resetIcons || oldMarker._zoomLevel !== zoom || cluster.lastMarker.data.forceIconRedraw) {
-            _this.PrepareLeafletMarker(oldMarker, cluster.lastMarker.data, cluster.lastMarker.category);
-
-            if (cluster.lastMarker.data.forceIconRedraw) {
-              cluster.lastMarker.data.forceIconRedraw = false;
-            }
-          }
-
-          oldMarker.setLatLng(position);
-          m = oldMarker;
-        } else if (cluster.population > 1 && data._leafletOldPopulation > 1 && (oldMarker._zoomLevel === zoom || data._leafletPosition.equals(position))) {
-          oldMarker.setLatLng(position);
-
-          if (resetIcons || cluster.population != data._leafletOldPopulation || cluster.hashCode !== data._leafletOldHashCode) {
-            var boundsCopy = {};
-            L.Util.extend(boundsCopy, cluster.bounds);
-            oldMarker._leafletClusterBounds = boundsCopy;
-            oldMarker.setIcon(_this.BuildLeafletClusterIcon(cluster));
-          }
-
-          data._leafletOldPopulation = cluster.population;
-          data._leafletOldHashCode = cluster.hashCode;
-          m = oldMarker;
-        }
-      }
-
-      if (!m) {
-        if (cluster.population === 1) {
-          clusterCreationListPopOne.push(cluster);
-        } else {
-          clusterCreationList.push(cluster);
-        }
-
-        data._leafletPosition = position;
-        data._leafletOldPopulation = cluster.population;
-        data._leafletOldHashCode = cluster.hashCode;
-      } else {
-        m._removeFromMap = false;
-        newObjectsOnMap.push(cluster);
-        m._zoomLevel = zoom;
-        m._hashCode = cluster.hashCode;
-        m._population = cluster.population;
-        data._leafletMarker = m;
-        data._leafletPosition = position;
-      }
-    });
-    clusterCreationList = clusterCreationListPopOne.concat(clusterCreationList);
-
-    for (i = 0, l = objectsOnMap.length; i < l; ++i) {
-      icluster = objectsOnMap[i];
-      var idata = icluster.data;
-      marker = idata._leafletMarker;
-
-      if (idata._leafletMarker._removeFromMap) {
-        var remove = true;
-
-        if (marker._zoomLevel === zoom) {
-          var pa = icluster.averagePosition;
-          latMargin = (icluster.bounds.maxLat - icluster.bounds.minLat) * marginRatio, lngMargin = (icluster.bounds.maxLng - icluster.bounds.minLng) * marginRatio;
-
-          for (j = 0, ll = clusterCreationList.length; j < ll; ++j) {
-            var jcluster = clusterCreationList[j],
-                jdata = jcluster.data;
-
-            if (marker._population === 1 && jcluster.population === 1 && marker._hashCode === jcluster.hashCode) {
-              if (resetIcons || jcluster.lastMarker.data.forceIconRedraw) {
-                this.PrepareLeafletMarker(marker, jcluster.lastMarker.data, jcluster.lastMarker.category);
-
-                if (jcluster.lastMarker.data.forceIconRedraw) {
-                  jcluster.lastMarker.data.forceIconRedraw = false;
-                }
-              }
-
-              marker.setLatLng(jdata._leafletPosition);
-              remove = false;
-            } else {
-              var pb = jcluster.averagePosition;
-              var oldMinLng = pa.lng - lngMargin,
-                  newMaxLng = pb.lng + lngMargin;
-              oldMaxLng = pa.lng + lngMargin;
-              oldMinLat = pa.lat - latMargin;
-              oldMaxLat = pa.lat + latMargin;
-              newMinLng = pb.lng - lngMargin;
-              newMinLat = pb.lat - latMargin;
-              newMaxLat = pb.lat + latMargin;
-
-              if (marker._population > 1 && jcluster.population > 1 && oldMaxLng > newMinLng && oldMinLng < newMaxLng && oldMaxLat > newMinLat && oldMinLat < newMaxLat) {
-                marker.setLatLng(jdata._leafletPosition);
-                marker.setIcon(this.BuildLeafletClusterIcon(jcluster));
-                var poisson = {};
-                L.Util.extend(poisson, jcluster.bounds);
-                marker._leafletClusterBounds = poisson;
-                jdata._leafletOldPopulation = jcluster.population;
-                jdata._leafletOldHashCode = jcluster.hashCode;
-                marker._population = jcluster.population;
-                remove = false;
-              }
-            }
-
-            if (!remove) {
-              jdata._leafletMarker = marker;
-              marker._removeFromMap = false;
-              newObjectsOnMap.push(jcluster);
-              clusterCreationList.splice(j, 1);
-              --j;
-              --ll;
-              break;
-            }
-          }
-        }
-
-        if (remove) {
-          if (!marker._removeFromMap) console.error("wtf");
-        }
-      }
-    }
-
-    for (i = 0, l = clusterCreationList.length; i < l; ++i) {
-      icluster = clusterCreationList[i], idata = icluster.data;
-      var iposition = idata._leafletPosition;
-      var creationMarker;
-
-      if (icluster.population === 1) {
-        creationMarker = this.BuildLeafletMarker(icluster.lastMarker, iposition);
-      } else {
-        creationMarker = this.BuildLeafletCluster(icluster, iposition);
-      }
-
-      creationMarker.addTo(map);
-      creationMarker.setOpacity(0);
-      opacityUpdateList.push(creationMarker);
-      idata._leafletMarker = creationMarker;
-      creationMarker._zoomLevel = zoom;
-      creationMarker._hashCode = icluster.hashCode;
-      creationMarker._population = icluster.population;
-      newObjectsOnMap.push(icluster);
-    }
-
-    window.setTimeout(function () {
-      for (i = 0, l = opacityUpdateList.length; i < l; ++i) {
-        var m = opacityUpdateList[i];
-        if (m._icon) L.DomUtil.addClass(m._icon, "prunecluster-anim");
-        if (m._shadow) L.DomUtil.addClass(m._shadow, "prunecluster-anim");
-        m.setOpacity(1);
-      }
-    }, 1);
-
-    if (this._hardMove) {
-      for (i = 0, l = markersOnMap.length; i < l; ++i) {
-        marker = markersOnMap[i];
-
-        if (marker._removeFromMap) {
-          map.removeLayer(marker);
-        }
-      }
-    } else {
-      if (this._removeTimeoutId !== 0) {
-        window.clearTimeout(this._removeTimeoutId);
-
-        for (i = 0, l = this._markersRemoveListTimeout.length; i < l; ++i) {
-          map.removeLayer(this._markersRemoveListTimeout[i]);
-        }
-      }
-
-      var toRemove = [];
-
-      for (i = 0, l = markersOnMap.length; i < l; ++i) {
-        marker = markersOnMap[i];
-
-        if (marker._removeFromMap) {
-          marker.setOpacity(0);
-          toRemove.push(marker);
-        }
-      }
-
-      if (toRemove.length > 0) {
-        this._removeTimeoutId = window.setTimeout(function () {
-          for (i = 0, l = toRemove.length; i < l; ++i) {
-            map.removeLayer(toRemove[i]);
-          }
-
-          _this._removeTimeoutId = 0;
-        }, 300);
-      }
-
-      this._markersRemoveListTimeout = toRemove;
-    }
-
-    this._objectsOnMap = newObjectsOnMap;
-    this._hardMove = false;
-    this._resetIcons = false;
-  },
-  FitBounds: function FitBounds(withFiltered) {
-    if (withFiltered === void 0) {
-      withFiltered = true;
-    }
-
-    var bounds = this.Cluster.ComputeGlobalBounds(withFiltered);
-
-    if (bounds) {
-      this._map.fitBounds(new L.LatLngBounds(new L.LatLng(bounds.minLat, bounds.maxLng), new L.LatLng(bounds.maxLat, bounds.minLng)));
-    }
-  },
-  GetMarkers: function GetMarkers() {
-    return this.Cluster.GetMarkers();
-  },
-  RedrawIcons: function RedrawIcons(processView) {
-    if (processView === void 0) {
-      processView = true;
-    }
-
-    this._resetIcons = true;
-
-    if (processView) {
-      this.ProcessView();
-    }
-  }
-});
-var PruneClusterLeafletSpiderfier = (L.Layer ? L.Layer : L.Class).extend({
-  _2PI: Math.PI * 2,
-  _circleFootSeparation: 25,
-  _circleStartAngle: Math.PI / 6,
-  _spiralFootSeparation: 28,
-  _spiralLengthStart: 11,
-  _spiralLengthFactor: 5,
-  _spiralCountTrigger: 8,
-  spiderfyDistanceMultiplier: 1,
-  initialize: function initialize(cluster) {
-    this._cluster = cluster;
-    this._currentMarkers = [];
-    this._multiLines = !!L.multiPolyline;
-    this._lines = this._multiLines ? L.multiPolyline([], {
-      weight: 1.5,
-      color: '#222'
-    }) : L.polyline([], {
-      weight: 1.5,
-      color: '#222'
-    });
-  },
-  onAdd: function onAdd(map) {
-    this._map = map;
-
-    this._map.on('overlappingmarkers', this.Spiderfy, this);
-
-    this._map.on('click', this.Unspiderfy, this);
-
-    this._map.on('zoomend', this.Unspiderfy, this);
-  },
-  Spiderfy: function Spiderfy(data) {
-    var _this = this;
-
-    if (data.cluster !== this._cluster) {
-      return;
-    }
-
-    this.Unspiderfy();
-    var markers = data.markers.filter(function (marker) {
-      return !marker.filtered;
-    });
-    this._currentCenter = data.center;
-
-    var centerPoint = this._map.latLngToLayerPoint(data.center);
-
-    var points;
-
-    if (markers.length >= this._spiralCountTrigger) {
-      points = this._generatePointsSpiral(markers.length, centerPoint);
-    } else {
-      if (this._multiLines) {
-        centerPoint.y += 10;
-      }
-
-      points = this._generatePointsCircle(markers.length, centerPoint);
-    }
-
-    var polylines = [];
-    var leafletMarkers = [];
-    var projectedPoints = [];
-
-    for (var i = 0, l = points.length; i < l; ++i) {
-      var pos = this._map.layerPointToLatLng(points[i]);
-
-      var m = this._cluster.BuildLeafletMarker(markers[i], data.center);
-
-      m.setZIndexOffset(5000);
-      m.setOpacity(0);
-
-      this._currentMarkers.push(m);
-
-      this._map.addLayer(m);
-
-      leafletMarkers.push(m);
-      projectedPoints.push(pos);
-    }
-
-    window.setTimeout(function () {
-      for (i = 0, l = points.length; i < l; ++i) {
-        leafletMarkers[i].setLatLng(projectedPoints[i]).setOpacity(1);
-      }
-
-      var startTime = +new Date();
-      var interval = 42,
-          duration = 290;
-      var anim = window.setInterval(function () {
-        polylines = [];
-        var now = +new Date();
-        var d = now - startTime;
-
-        if (d >= duration) {
-          window.clearInterval(anim);
-          stepRatio = 1.0;
-        } else {
-          var stepRatio = d / duration;
-        }
-
-        var center = data.center;
-
-        for (i = 0, l = points.length; i < l; ++i) {
-          var p = projectedPoints[i],
-              diffLat = p.lat - center.lat,
-              diffLng = p.lng - center.lng;
-          polylines.push([center, new L.LatLng(center.lat + diffLat * stepRatio, center.lng + diffLng * stepRatio)]);
-        }
-
-        _this._lines.setLatLngs(polylines);
-      }, interval);
-    }, 1);
-
-    this._lines.setLatLngs(polylines);
-
-    this._map.addLayer(this._lines);
-
-    if (data.marker) {
-      this._clusterMarker = data.marker.setOpacity(0.3);
-    }
-  },
-  _generatePointsCircle: function _generatePointsCircle(count, centerPt) {
-    var circumference = this.spiderfyDistanceMultiplier * this._circleFootSeparation * (2 + count),
-        legLength = circumference / this._2PI,
-        angleStep = this._2PI / count,
-        res = [],
-        i,
-        angle;
-    res.length = count;
-
-    for (i = count - 1; i >= 0; i--) {
-      angle = this._circleStartAngle + i * angleStep;
-      res[i] = new L.Point(Math.round(centerPt.x + legLength * Math.cos(angle)), Math.round(centerPt.y + legLength * Math.sin(angle)));
-    }
-
-    return res;
-  },
-  _generatePointsSpiral: function _generatePointsSpiral(count, centerPt) {
-    var legLength = this.spiderfyDistanceMultiplier * this._spiralLengthStart,
-        separation = this.spiderfyDistanceMultiplier * this._spiralFootSeparation,
-        lengthFactor = this.spiderfyDistanceMultiplier * this._spiralLengthFactor,
-        angle = 0,
-        res = [],
-        i;
-    res.length = count;
-
-    for (i = count - 1; i >= 0; i--) {
-      angle += separation / legLength + i * 0.0005;
-      res[i] = new L.Point(Math.round(centerPt.x + legLength * Math.cos(angle)), Math.round(centerPt.y + legLength * Math.sin(angle)));
-      legLength += this._2PI * lengthFactor / angle;
-    }
-
-    return res;
-  },
-  Unspiderfy: function Unspiderfy() {
-    var _this = this;
-
-    for (var i = 0, l = this._currentMarkers.length; i < l; ++i) {
-      this._currentMarkers[i].setLatLng(this._currentCenter).setOpacity(0);
-    }
-
-    var markers = this._currentMarkers;
-    window.setTimeout(function () {
-      for (i = 0, l = markers.length; i < l; ++i) {
-        _this._map.removeLayer(markers[i]);
-      }
-    }, 300);
-    this._currentMarkers = [];
-
-    this._map.removeLayer(this._lines);
-
-    if (this._clusterMarker) {
-      this._clusterMarker.setOpacity(1);
-    }
-  },
-  onRemove: function onRemove(map) {
-    this.Unspiderfy();
-    map.off('overlappingmarkers', this.Spiderfy, this);
-    map.off('click', this.Unspiderfy, this);
-    map.off('zoomend', this.Unspiderfy, this);
-  }
-});
-// EXTERNAL MODULE: ./src/assets/default_icon_pin.svg
-var default_icon_pin = __webpack_require__("92cb");
-var default_icon_pin_default = /*#__PURE__*/__webpack_require__.n(default_icon_pin);
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PruneCluster.vue?vue&type=script&lang=js&
-
-
-
-
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var PruneClustervue_type_script_lang_js_ = ({
-  name: "PruneCluster",
-  props: ['mapRef', 'items', 'setIcon'],
-  data: function data() {
-    return {
-      pruneCluster: undefined,
-      selectedItem: undefined
-    };
-  },
-  computed: {
-    setIconOrDefault: function setIconOrDefault() {
-      var i = this.setIcon;
-      var defaultIcon = leaflet_src_default.a.icon({
-        iconUrl: default_icon_pin_default.a,
-        iconSize: [29, 29]
-      });
-      return i ? i : defaultIcon;
-    },
-    setIconMarkerClusterOrDefault: function setIconMarkerClusterOrDefault() {
-      var i = this.setIconMarkerCluster;
-      var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'],
-          pi2 = Math.PI * 2;
-      leaflet_src_default.a.Icon.MarkerCluster = leaflet_src_default.a.Icon.extend({
-        options: {
-          // iconUrl: '/static/icons/icon_cluster_yellow.svg',
-          iconSize: new leaflet_src_default.a.Point(44, 44),
-          className: 'prunecluster leaflet-markercluster-icon'
-        },
-        createIcon: function createIcon() {
-          // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
-          var e = document.createElement('canvas');
-
-          this._setIconStyles(e, 'icon');
-
-          var s = this.options.iconSize;
-          e.width = s.x;
-          e.height = s.y;
-          this.draw(e.getContext('2d'), s.x, s.y);
-          return e;
-        },
-        createShadow: function createShadow() {
-          return null;
-        },
-        draw: function draw(canvas) {
-          var start = 0;
-
-          for (var i = 0, l = colors.length; i < l; ++i) {
-            var size = this.stats[i] / this.population;
-
-            if (size > 0) {
-              canvas.beginPath();
-              canvas.moveTo(22, 22);
-              canvas.fillStyle = colors[i];
-              var from = start + 0.14,
-                  to = start + size * pi2;
-
-              if (to < from) {
-                from = start;
-              }
-
-              canvas.arc(22, 22, 22, from, to);
-              start = start + size * pi2;
-              canvas.lineTo(22, 22);
-              canvas.fill();
-              canvas.closePath();
-            }
-          }
-
-          canvas.beginPath();
-          canvas.fillStyle = '#a174ac';
-          canvas.arc(22, 22, 18, 0, Math.PI * 2);
-          canvas.fill();
-          canvas.closePath();
-          canvas.fillStyle = 'white';
-          canvas.textAlign = 'center';
-          canvas.textBaseline = 'middle';
-          canvas.font = 'bold 12px sans-serif';
-          canvas.fillText(this.population, 22, 22, 40);
-        }
-      });
-      return i ? i : new leaflet_src_default.a.Icon.MarkerCluster();
-    }
-  },
-  mounted: function mounted() {
-    // console.log(" - - CustomMarkers / mounted... ")
-    this.pruneCluster = new PruneClusterForLeaflet();
-    var emitDataFunction = this.emitItem; //trick to be able to access this inside the leaflet function
-
-    var thisVue = this; //--------------------------------- icon Cluster configuration
-
-    this.pruneCluster.PrepareLeafletMarker = function (leafletMarker, data) {
-      leafletMarker.setIcon(thisVue.setIconOrDefault); // we configure the onClick option
-
-      leafletMarker.on('click', function () {
-        emitDataFunction(data, leafletMarker, thisVue.pruneCluster);
-      });
-    }; //--------------------------------- icon Cluster configuration
-
-
-    this.pruneCluster.BuildLeafletClusterIcon = function (cluster) {
-      var e = thisVue.setIconMarkerClusterOrDefault;
-      e.stats = cluster.stats;
-      e.population = cluster.population;
-      return e;
-    };
-
-    var map = this.mapRef.map.mapObject;
-    map.addLayer(this.pruneCluster); // for the example, to show something even though there are no items
-
-    this.reDraw();
-  },
-  watch: {
-    items: function items() {
-      if (this.items && this.items.length > 0) {
-        this.reDraw();
-      }
-    }
-  },
-  methods: {
-    emitItem: function emitItem(item, leafletMarker, pruneCluster) {
-      this.$emit('clickOnItem', JSON.parse(stringify_default()(item)), leafletMarker, pruneCluster);
-    },
-    reDraw: function reDraw() {
-      var _this = this;
-
-      // console.log('------------- redraw -------------');
-      // var pruneCluster = new PruneClusterForLeaflet();
-      var pruneCluster = this.pruneCluster;
-      pruneCluster.RemoveMarkers();
-      console.log('removed all the markers - number of markers to map: ', this.items.length);
-      this.items.forEach(function (item) {
-        var marker = _this.createMarker(item);
-
-        pruneCluster.RegisterMarker(marker);
-      });
-    },
-    createMarker: function createMarker(obj) {
-      var parsedObj = JSON.parse(stringify_default()(obj));
-      var marker = new PruneCluster.Marker(parsedObj[this.findLat(parsedObj)], parsedObj[this.findLng(parsedObj)]);
-      marker.data = parsedObj;
-      return marker;
-    },
-    findLat: function findLat(obj) {
-      return keys_default()(obj).find(function (o) {
-        return /lat|LAT|lati|latitude|Latitude/g.test(o);
-      });
-    },
-    findLng: function findLng(obj) {
-      return keys_default()(obj).find(function (o) {
-        return /lng|lon|LON|LNG|long|longitude|Longitude/g.test(o);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/PruneCluster.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_PruneClustervue_type_script_lang_js_ = (PruneClustervue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/PruneCluster.vue
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  components_PruneClustervue_type_script_lang_js_,
-  PruneClustervue_type_template_id_864aaf9e_render,
-  PruneClustervue_type_template_id_864aaf9e_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var components_PruneCluster = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/VuejsPruneCluster.vue?vue&type=script&lang=js&shadow
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ var VuejsPruneClustervue_type_script_lang_js_shadow = ({
-  name: 'app',
-  components: {
-    PruneCluster: components_PruneCluster
-  },
-  props: ['items', 'mapRef', 'setIcon', 'handleClick']
-});
-// CONCATENATED MODULE: ./src/VuejsPruneCluster.vue?vue&type=script&lang=js&shadow
- /* harmony default export */ var src_VuejsPruneClustervue_type_script_lang_js_shadow = (VuejsPruneClustervue_type_script_lang_js_shadow); 
-// CONCATENATED MODULE: ./src/VuejsPruneCluster.vue?shadow
-
-
-
-function injectStyles (context) {
-  
-  var style0 = __webpack_require__("9248")
-if (style0.__inject__) style0.__inject__(context)
-
-}
-
-/* normalize component */
-
-var VuejsPruneClustershadow_component = normalizeComponent(
-  src_VuejsPruneClustervue_type_script_lang_js_shadow,
-  render,
-  staticRenderFns,
-  false,
-  injectStyles,
-  null,
-  null
-  ,true
-)
-
-/* harmony default export */ var VuejsPruneClustershadow = (VuejsPruneClustershadow_component.exports);
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-wc.js
-
-
-
-
-// runtime shared by every component chunk
-
-
-
-
-
-window.customElements.define('prune-cluster', vue_wc_wrapper(external_Vue_default.a, VuejsPruneClustershadow))
-
-/***/ }),
-
 /***/ "5b4e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2977,6 +887,13 @@ module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
+
+/***/ }),
+
+/***/ "6397":
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII="
 
 /***/ }),
 
@@ -3294,13 +1211,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "8bbf":
-/***/ (function(module, exports) {
-
-module.exports = Vue;
-
-/***/ }),
-
 /***/ "8e60":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3308,6 +1218,18 @@ module.exports = Vue;
 module.exports = !__webpack_require__("294c")(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
+
+
+/***/ }),
+
+/***/ "9003":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.2.2 IsArray(argument)
+var cof = __webpack_require__("6b4c");
+module.exports = Array.isArray || function isArray(arg) {
+  return cof(arg) == 'Array';
+};
 
 
 /***/ }),
@@ -3323,25 +1245,6 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
-
-/***/ }),
-
-/***/ "9248":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("d5d3");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VuejsPruneCluster_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "92cb":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "img/default_icon_pin.c48e28b3.svg";
 
 /***/ }),
 
@@ -3484,6 +1387,13 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("8aae");
+
+/***/ }),
+
+/***/ "a745":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("f410");
 
 /***/ }),
 
@@ -3804,13 +1714,6 @@ module.exports = function (KEY, exec) {
 
 /***/ }),
 
-/***/ "cf05":
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "img/logo.82b9c7a5.png";
-
-/***/ }),
-
 /***/ "d3f4":
 /***/ (function(module, exports) {
 
@@ -3818,23 +1721,6 @@ module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-
-/***/ }),
-
-/***/ "d5d3":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("f6de");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add CSS to Shadow Root
-var add = __webpack_require__("35d6").default
-module.exports.__inject__ = function (shadowRoot) {
-  add("adf7c1f8", content, shadowRoot)
-};
 
 /***/ }),
 
@@ -17981,25 +15867,19 @@ module.exports = {
 
 /***/ }),
 
+/***/ "f410":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("1af6");
+module.exports = __webpack_require__("584a").Array.isArray;
+
+
+/***/ }),
+
 /***/ "f499":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("a21f");
-
-/***/ }),
-
-/***/ "f6de":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("2350")(false);
-// imports
-
-
-// module
-exports.push([module.i, "#app{font-family:Avenir,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-align:center;color:#2c3e50;margin-top:60px}", ""]);
-
-// exports
-
 
 /***/ }),
 
@@ -18030,6 +15910,1582 @@ module.exports = document && document.documentElement;
 
 /***/ }),
 
+/***/ "fb15":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+// This file is imported into lib/wc client bundles.
+
+if (typeof window !== 'undefined') {
+  var setPublicPath_i
+  if ((setPublicPath_i = window.document.currentScript) && (setPublicPath_i = setPublicPath_i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
+    __webpack_require__.p = setPublicPath_i[1] // eslint-disable-line
+  }
+}
+
+// Indicate to webpack that this file can be concatenated
+/* harmony default export */ var setPublicPath = (null);
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"1dcdf57b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PruneCluster.vue?vue&type=template&id=01d87965&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('p')}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/PruneCluster.vue?vue&type=template&id=01d87965&
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/keys.js
+var keys = __webpack_require__("a4bb");
+var keys_default = /*#__PURE__*/__webpack_require__.n(keys);
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.find.js
+var es6_array_find = __webpack_require__("7514");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js
+var stringify = __webpack_require__("f499");
+var stringify_default = /*#__PURE__*/__webpack_require__.n(stringify);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/array/is-array.js
+var is_array = __webpack_require__("a745");
+var is_array_default = /*#__PURE__*/__webpack_require__.n(is_array);
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.fill.js
+var es6_array_fill = __webpack_require__("6c7b");
+
+// EXTERNAL MODULE: ./node_modules/leaflet/dist/leaflet-src.js
+var leaflet_src = __webpack_require__("e11e");
+var leaflet_src_default = /*#__PURE__*/__webpack_require__.n(leaflet_src);
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
+var es6_number_constructor = __webpack_require__("c5f6");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.array.sort.js
+var es6_array_sort = __webpack_require__("55dd");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/create.js
+var create = __webpack_require__("4aa6");
+var create_default = /*#__PURE__*/__webpack_require__.n(create);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/object/set-prototype-of.js
+var set_prototype_of = __webpack_require__("4d16");
+var set_prototype_of_default = /*#__PURE__*/__webpack_require__.n(set_prototype_of);
+
+// CONCATENATED MODULE: ./src/utilsPruneCluster.js
+
+
+
+
+
+var __extends = undefined && undefined.__extends || function () {
+  var extendStatics = set_prototype_of_default.a || {
+    __proto__: []
+  } instanceof Array && function (d, b) {
+    d.__proto__ = b;
+  } || function (d, b) {
+    for (var p in b) {
+      if (b.hasOwnProperty(p)) d[p] = b[p];
+    }
+  };
+
+  return function (d, b) {
+    extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? create_default()(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var PruneCluster;
+
+(function (PruneCluster_1) {
+  var Point = function () {
+    function Point() {}
+
+    return Point;
+  }();
+
+  PruneCluster_1.Point = Point;
+
+  var ClusterObject = function () {
+    function ClusterObject() {}
+
+    return ClusterObject;
+  }();
+
+  PruneCluster_1.ClusterObject = ClusterObject;
+  var hashCodeCounter = 1;
+  var maxHashCodeValue = Math.pow(2, 53) - 1;
+
+  var Marker = function (_super) {
+    __extends(Marker, _super);
+
+    function Marker(lat, lng, data, category, weight, filtered) {
+      if (data === void 0) {
+        data = {};
+      }
+
+      if (weight === void 0) {
+        weight = 1;
+      }
+
+      if (filtered === void 0) {
+        filtered = false;
+      }
+
+      var _this = _super.call(this) || this;
+
+      _this.data = data;
+      _this.position = {
+        lat: +lat,
+        lng: +lng
+      };
+      _this.weight = weight;
+      _this.category = category;
+      _this.filtered = filtered;
+      _this.hashCode = hashCodeCounter++;
+      return _this;
+    }
+
+    Marker.prototype.Move = function (lat, lng) {
+      this.position.lat = +lat;
+      this.position.lng = +lng;
+    };
+
+    Marker.prototype.SetData = function (data) {
+      for (var key in data) {
+        this.data[key] = data[key];
+      }
+    };
+
+    return Marker;
+  }(ClusterObject);
+
+  PruneCluster_1.Marker = Marker;
+
+  var Cluster = function (_super) {
+    __extends(Cluster, _super);
+
+    function Cluster(marker) {
+      var _this = _super.call(this) || this;
+
+      _this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
+      _this.data = {};
+
+      if (!marker) {
+        _this.hashCode = 1;
+
+        if (Cluster.ENABLE_MARKERS_LIST) {
+          _this._clusterMarkers = [];
+        }
+
+        return _this;
+      }
+
+      if (Cluster.ENABLE_MARKERS_LIST) {
+        _this._clusterMarkers = [marker];
+      }
+
+      _this.lastMarker = marker;
+      _this.hashCode = 31 + marker.hashCode;
+      _this.population = 1;
+
+      if (marker.category !== undefined) {
+        _this.stats[marker.category] = 1;
+      }
+
+      _this.totalWeight = marker.weight;
+      _this.position = {
+        lat: marker.position.lat,
+        lng: marker.position.lng
+      };
+      _this.averagePosition = {
+        lat: marker.position.lat,
+        lng: marker.position.lng
+      };
+      return _this;
+    }
+
+    Cluster.prototype.AddMarker = function (marker) {
+      if (Cluster.ENABLE_MARKERS_LIST) {
+        this._clusterMarkers.push(marker);
+      }
+
+      var h = this.hashCode;
+      h = (h << 5) - h + marker.hashCode;
+
+      if (h >= maxHashCodeValue) {
+        this.hashCode = h % maxHashCodeValue;
+      } else {
+        this.hashCode = h;
+      }
+
+      this.lastMarker = marker;
+      var weight = marker.weight,
+          currentTotalWeight = this.totalWeight,
+          newWeight = weight + currentTotalWeight;
+      this.averagePosition.lat = (this.averagePosition.lat * currentTotalWeight + marker.position.lat * weight) / newWeight;
+      this.averagePosition.lng = (this.averagePosition.lng * currentTotalWeight + marker.position.lng * weight) / newWeight;
+      ++this.population;
+      this.totalWeight = newWeight;
+
+      if (marker.category !== undefined) {
+        this.stats[marker.category] = this.stats[marker.category] + 1 || 1;
+      }
+    };
+
+    Cluster.prototype.Reset = function () {
+      this.hashCode = 1;
+      this.lastMarker = undefined;
+      this.population = 0;
+      this.totalWeight = 0;
+      this.stats = [0, 0, 0, 0, 0, 0, 0, 0];
+
+      if (Cluster.ENABLE_MARKERS_LIST) {
+        this._clusterMarkers = [];
+      }
+    };
+
+    Cluster.prototype.ComputeBounds = function (cluster) {
+      var proj = cluster.Project(this.position.lat, this.position.lng);
+      var size = cluster.Size;
+      var nbX = Math.floor(proj.x / size),
+          nbY = Math.floor(proj.y / size),
+          startX = nbX * size,
+          startY = nbY * size;
+      var a = cluster.UnProject(startX, startY),
+          b = cluster.UnProject(startX + size, startY + size);
+      this.bounds = {
+        minLat: b.lat,
+        maxLat: a.lat,
+        minLng: a.lng,
+        maxLng: b.lng
+      };
+    };
+
+    Cluster.prototype.GetClusterMarkers = function () {
+      return this._clusterMarkers;
+    };
+
+    Cluster.prototype.ApplyCluster = function (newCluster) {
+      this.hashCode = this.hashCode * 41 + newCluster.hashCode * 43;
+
+      if (this.hashCode > maxHashCodeValue) {
+        this.hashCode = this.hashCode = maxHashCodeValue;
+      }
+
+      var weight = newCluster.totalWeight,
+          currentTotalWeight = this.totalWeight,
+          newWeight = weight + currentTotalWeight;
+      this.averagePosition.lat = (this.averagePosition.lat * currentTotalWeight + newCluster.averagePosition.lat * weight) / newWeight;
+      this.averagePosition.lng = (this.averagePosition.lng * currentTotalWeight + newCluster.averagePosition.lng * weight) / newWeight;
+      this.population += newCluster.population;
+      this.totalWeight = newWeight;
+      this.bounds.minLat = Math.min(this.bounds.minLat, newCluster.bounds.minLat);
+      this.bounds.minLng = Math.min(this.bounds.minLng, newCluster.bounds.minLng);
+      this.bounds.maxLat = Math.max(this.bounds.maxLat, newCluster.bounds.maxLat);
+      this.bounds.maxLng = Math.max(this.bounds.maxLng, newCluster.bounds.maxLng);
+
+      for (var category in newCluster.stats) {
+        if (newCluster.stats.hasOwnProperty(category)) {
+          if (this.stats.hasOwnProperty(category)) {
+            this.stats[category] += newCluster.stats[category];
+          } else {
+            this.stats[category] = newCluster.stats[category];
+          }
+        }
+      }
+
+      if (Cluster.ENABLE_MARKERS_LIST) {
+        this._clusterMarkers = this._clusterMarkers.concat(newCluster.GetClusterMarkers());
+      }
+    };
+
+    Cluster.ENABLE_MARKERS_LIST = false;
+    return Cluster;
+  }(ClusterObject);
+
+  PruneCluster_1.Cluster = Cluster;
+
+  function checkPositionInsideBounds(a, b) {
+    return a.lat >= b.minLat && a.lat <= b.maxLat && a.lng >= b.minLng && a.lng <= b.maxLng;
+  }
+
+  function insertionSort(list) {
+    for (var i = 1, j, tmp, tmpLng, length = list.length; i < length; ++i) {
+      tmp = list[i];
+      tmpLng = tmp.position.lng;
+
+      for (j = i - 1; j >= 0 && list[j].position.lng > tmpLng; --j) {
+        list[j + 1] = list[j];
+      }
+
+      list[j + 1] = tmp;
+    }
+  }
+
+  function shouldUseInsertionSort(total, nbChanges) {
+    if (nbChanges > 300) {
+      return false;
+    } else {
+      return nbChanges / total < 0.2;
+    }
+  }
+
+  var PruneCluster = function () {
+    function PruneCluster() {
+      this._markers = [];
+      this._nbChanges = 0;
+      this._clusters = [];
+      this.Size = 166;
+      this.ViewPadding = 0.2;
+    }
+
+    PruneCluster.prototype.RegisterMarker = function (marker) {
+      if (marker._removeFlag) {
+        delete marker._removeFlag;
+      }
+
+      this._markers.push(marker);
+
+      this._nbChanges += 1;
+    };
+
+    PruneCluster.prototype.RegisterMarkers = function (markers) {
+      var _this = this;
+
+      markers.forEach(function (marker) {
+        _this.RegisterMarker(marker);
+      });
+    };
+
+    PruneCluster.prototype._sortMarkers = function () {
+      var markers = this._markers,
+          length = markers.length;
+
+      if (this._nbChanges && !shouldUseInsertionSort(length, this._nbChanges)) {
+        this._markers.sort(function (a, b) {
+          return a.position.lng - b.position.lng;
+        });
+      } else {
+        insertionSort(markers);
+      }
+
+      this._nbChanges = 0;
+    };
+
+    PruneCluster.prototype._sortClusters = function () {
+      insertionSort(this._clusters);
+    };
+
+    PruneCluster.prototype._indexLowerBoundLng = function (lng) {
+      var markers = this._markers,
+          it,
+          step,
+          first = 0,
+          count = markers.length;
+
+      while (count > 0) {
+        step = Math.floor(count / 2);
+        it = first + step;
+
+        if (markers[it].position.lng < lng) {
+          first = ++it;
+          count -= step + 1;
+        } else {
+          count = step;
+        }
+      }
+
+      return first;
+    };
+
+    PruneCluster.prototype._resetClusterViews = function () {
+      for (var i = 0, l = this._clusters.length; i < l; ++i) {
+        var cluster = this._clusters[i];
+        cluster.Reset();
+        cluster.ComputeBounds(this);
+      }
+    };
+
+    PruneCluster.prototype.ProcessView = function (bounds) {
+      var heightBuffer = Math.abs(bounds.maxLat - bounds.minLat) * this.ViewPadding,
+          widthBuffer = Math.abs(bounds.maxLng - bounds.minLng) * this.ViewPadding;
+      var extendedBounds = {
+        minLat: bounds.minLat - heightBuffer - heightBuffer,
+        maxLat: bounds.maxLat + heightBuffer + heightBuffer,
+        minLng: bounds.minLng - widthBuffer - widthBuffer,
+        maxLng: bounds.maxLng + widthBuffer + widthBuffer
+      };
+
+      this._sortMarkers();
+
+      this._resetClusterViews();
+
+      var firstIndex = this._indexLowerBoundLng(extendedBounds.minLng);
+
+      var markers = this._markers,
+          clusters = this._clusters;
+      var workingClusterList = clusters.slice(0);
+
+      for (var i = firstIndex, l = markers.length; i < l; ++i) {
+        var marker = markers[i],
+            markerPosition = marker.position;
+
+        if (markerPosition.lng > extendedBounds.maxLng) {
+          break;
+        }
+
+        if (markerPosition.lat > extendedBounds.minLat && markerPosition.lat < extendedBounds.maxLat && !marker.filtered) {
+          var clusterFound = false,
+              cluster;
+
+          for (var j = 0, ll = workingClusterList.length; j < ll; ++j) {
+            cluster = workingClusterList[j];
+
+            if (cluster.bounds.maxLng < marker.position.lng) {
+              workingClusterList.splice(j, 1);
+              --j;
+              --ll;
+              continue;
+            }
+
+            if (checkPositionInsideBounds(markerPosition, cluster.bounds)) {
+              cluster.AddMarker(marker);
+              clusterFound = true;
+              break;
+            }
+          }
+
+          if (!clusterFound) {
+            cluster = new Cluster(marker);
+            cluster.ComputeBounds(this);
+            clusters.push(cluster);
+            workingClusterList.push(cluster);
+          }
+        }
+      }
+
+      var newClustersList = [];
+
+      for (i = 0, l = clusters.length; i < l; ++i) {
+        cluster = clusters[i];
+
+        if (cluster.population > 0) {
+          newClustersList.push(cluster);
+        }
+      }
+
+      this._clusters = newClustersList;
+
+      this._sortClusters();
+
+      return this._clusters;
+    };
+
+    PruneCluster.prototype.RemoveMarkers = function (markers) {
+      if (!markers) {
+        this._markers = [];
+        return;
+      }
+
+      for (var i = 0, l = markers.length; i < l; ++i) {
+        markers[i]._removeFlag = true;
+      }
+
+      var newMarkersList = [];
+
+      for (i = 0, l = this._markers.length; i < l; ++i) {
+        if (!this._markers[i]._removeFlag) {
+          newMarkersList.push(this._markers[i]);
+        } else {
+          delete this._markers[i]._removeFlag;
+        }
+      }
+
+      this._markers = newMarkersList;
+    };
+
+    PruneCluster.prototype.FindMarkersInArea = function (area) {
+      var aMinLat = area.minLat,
+          aMaxLat = area.maxLat,
+          aMinLng = area.minLng,
+          aMaxLng = area.maxLng,
+          markers = this._markers,
+          result = [];
+
+      var firstIndex = this._indexLowerBoundLng(aMinLng);
+
+      for (var i = firstIndex, l = markers.length; i < l; ++i) {
+        var pos = markers[i].position;
+
+        if (pos.lng > aMaxLng) {
+          break;
+        }
+
+        if (pos.lat >= aMinLat && pos.lat <= aMaxLat && pos.lng >= aMinLng) {
+          result.push(markers[i]);
+        }
+      }
+
+      return result;
+    };
+
+    PruneCluster.prototype.ComputeBounds = function (markers, withFiltered) {
+      if (withFiltered === void 0) {
+        withFiltered = true;
+      }
+
+      if (!markers || !markers.length) {
+        return null;
+      }
+
+      var rMinLat = Number.MAX_VALUE,
+          rMaxLat = -Number.MAX_VALUE,
+          rMinLng = Number.MAX_VALUE,
+          rMaxLng = -Number.MAX_VALUE;
+
+      for (var i = 0, l = markers.length; i < l; ++i) {
+        if (!withFiltered && markers[i].filtered) {
+          continue;
+        }
+
+        var pos = markers[i].position;
+        if (pos.lat < rMinLat) rMinLat = pos.lat;
+        if (pos.lat > rMaxLat) rMaxLat = pos.lat;
+        if (pos.lng < rMinLng) rMinLng = pos.lng;
+        if (pos.lng > rMaxLng) rMaxLng = pos.lng;
+      }
+
+      return {
+        minLat: rMinLat,
+        maxLat: rMaxLat,
+        minLng: rMinLng,
+        maxLng: rMaxLng
+      };
+    };
+
+    PruneCluster.prototype.FindMarkersBoundsInArea = function (area) {
+      return this.ComputeBounds(this.FindMarkersInArea(area));
+    };
+
+    PruneCluster.prototype.ComputeGlobalBounds = function (withFiltered) {
+      if (withFiltered === void 0) {
+        withFiltered = true;
+      }
+
+      return this.ComputeBounds(this._markers, withFiltered);
+    };
+
+    PruneCluster.prototype.GetMarkers = function () {
+      return this._markers;
+    };
+
+    PruneCluster.prototype.GetPopulation = function () {
+      return this._markers.length;
+    };
+
+    PruneCluster.prototype.ResetClusters = function () {
+      this._clusters = [];
+    };
+
+    return PruneCluster;
+  }();
+
+  PruneCluster_1.PruneCluster = PruneCluster;
+})(PruneCluster || (PruneCluster = {})); // var PruneCluster;
+// (function (PruneCluster) {
+// })(PruneCluster || (PruneCluster = {}));
+
+
+var PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({
+  initialize: function initialize(size, clusterMargin) {
+    var _this = this;
+
+    if (size === void 0) {
+      size = 120;
+    }
+
+    if (clusterMargin === void 0) {
+      clusterMargin = 20;
+    }
+
+    this.Cluster = new PruneCluster.PruneCluster();
+    this.Cluster.Size = size;
+    this.clusterMargin = Math.min(clusterMargin, size / 4);
+
+    this.Cluster.Project = function (lat, lng) {
+      return _this._map.project(new L.LatLng(lat, lng), Math.floor(_this._map.getZoom()));
+    };
+
+    this.Cluster.UnProject = function (x, y) {
+      return _this._map.unproject(new L.Point(x, y), Math.floor(_this._map.getZoom()));
+    };
+
+    this._objectsOnMap = [];
+    this.spiderfier = new PruneClusterLeafletSpiderfier(this);
+    this._hardMove = false;
+    this._resetIcons = false;
+    this._removeTimeoutId = 0;
+    this._markersRemoveListTimeout = [];
+  },
+  RegisterMarker: function RegisterMarker(marker) {
+    this.Cluster.RegisterMarker(marker);
+  },
+  RegisterMarkers: function RegisterMarkers(markers) {
+    this.Cluster.RegisterMarkers(markers);
+  },
+  RemoveMarkers: function RemoveMarkers(markers) {
+    this.Cluster.RemoveMarkers(markers);
+  },
+  BuildLeafletCluster: function BuildLeafletCluster(cluster, position) {
+    var _this = this;
+
+    var m = new L.Marker(position, {
+      icon: this.BuildLeafletClusterIcon(cluster)
+    });
+    m._leafletClusterBounds = cluster.bounds;
+    m.on('click', function () {
+      var cbounds = m._leafletClusterBounds;
+
+      var markersArea = _this.Cluster.FindMarkersInArea(cbounds);
+
+      var b = _this.Cluster.ComputeBounds(markersArea);
+
+      if (b) {
+        var bounds = new L.LatLngBounds(new L.LatLng(b.minLat, b.maxLng), new L.LatLng(b.maxLat, b.minLng));
+
+        var zoomLevelBefore = _this._map.getZoom(),
+            zoomLevelAfter = _this._map.getBoundsZoom(bounds, false, new L.Point(20, 20));
+
+        if (zoomLevelAfter === zoomLevelBefore) {
+          var filteredBounds = [];
+
+          for (var i = 0, l = _this._objectsOnMap.length; i < l; ++i) {
+            var o = _this._objectsOnMap[i];
+
+            if (o.data._leafletMarker !== m) {
+              if (o.bounds.minLat >= cbounds.minLat && o.bounds.maxLat <= cbounds.maxLat && o.bounds.minLng >= cbounds.minLng && o.bounds.maxLng <= cbounds.maxLng) {
+                filteredBounds.push(o.bounds);
+              }
+            }
+          }
+
+          if (filteredBounds.length > 0) {
+            var newMarkersArea = [];
+            var ll = filteredBounds.length;
+
+            for (i = 0, l = markersArea.length; i < l; ++i) {
+              var markerPos = markersArea[i].position;
+              var isFiltered = false;
+
+              for (var j = 0; j < ll; ++j) {
+                var currentFilteredBounds = filteredBounds[j];
+
+                if (markerPos.lat >= currentFilteredBounds.minLat && markerPos.lat <= currentFilteredBounds.maxLat && markerPos.lng >= currentFilteredBounds.minLng && markerPos.lng <= currentFilteredBounds.maxLng) {
+                  isFiltered = true;
+                  break;
+                }
+              }
+
+              if (!isFiltered) {
+                newMarkersArea.push(markersArea[i]);
+              }
+            }
+
+            markersArea = newMarkersArea;
+          }
+
+          if (markersArea.length < 200 || zoomLevelAfter >= _this._map.getMaxZoom()) {
+            _this._map.fire('overlappingmarkers', {
+              cluster: _this,
+              markers: markersArea,
+              center: m.getLatLng(),
+              marker: m
+            });
+          } else {
+            zoomLevelAfter++;
+          }
+
+          _this._map.setView(m.getLatLng(), zoomLevelAfter);
+        } else {
+          _this._map.fitBounds(bounds);
+        }
+      }
+    });
+    return m;
+  },
+  BuildLeafletClusterIcon: function BuildLeafletClusterIcon(cluster) {
+    var c = 'prunecluster prunecluster-';
+    var iconSize = 38;
+    var maxPopulation = this.Cluster.GetPopulation();
+
+    if (cluster.population < Math.max(10, maxPopulation * 0.01)) {
+      c += 'small';
+    } else if (cluster.population < Math.max(100, maxPopulation * 0.05)) {
+      c += 'medium';
+      iconSize = 40;
+    } else {
+      c += 'large';
+      iconSize = 44;
+    }
+
+    return new L.DivIcon({
+      html: "<div><span>" + cluster.population + "</span></div>",
+      className: c,
+      iconSize: L.point(iconSize, iconSize)
+    });
+  },
+  BuildLeafletMarker: function BuildLeafletMarker(marker, position) {
+    var m = new L.Marker(position);
+    this.PrepareLeafletMarker(m, marker.data, marker.category);
+    return m;
+  },
+  PrepareLeafletMarker: function PrepareLeafletMarker(marker, data, category) {
+    if (data.icon) {
+      if (typeof data.icon === 'function') {
+        marker.setIcon(data.icon(data, category));
+      } else {
+        marker.setIcon(data.icon);
+      }
+    }
+
+    if (data.popup) {
+      var content = typeof data.popup === 'function' ? data.popup(data, category) : data.popup;
+
+      if (marker.getPopup()) {
+        marker.setPopupContent(content, data.popupOptions);
+      } else {
+        marker.bindPopup(content, data.popupOptions);
+      }
+    }
+  },
+  onAdd: function onAdd(map) {
+    this._map = map;
+    map.on('movestart', this._moveStart, this);
+    map.on('moveend', this._moveEnd, this);
+    map.on('zoomend', this._zoomStart, this);
+    map.on('zoomend', this._zoomEnd, this);
+    this.ProcessView();
+    map.addLayer(this.spiderfier);
+  },
+  onRemove: function onRemove(map) {
+    map.off('movestart', this._moveStart, this);
+    map.off('moveend', this._moveEnd, this);
+    map.off('zoomend', this._zoomStart, this);
+    map.off('zoomend', this._zoomEnd, this);
+
+    for (var i = 0, l = this._objectsOnMap.length; i < l; ++i) {
+      map.removeLayer(this._objectsOnMap[i].data._leafletMarker);
+    }
+
+    this._objectsOnMap = [];
+    this.Cluster.ResetClusters();
+    map.removeLayer(this.spiderfier);
+    this._map = null;
+  },
+  _moveStart: function _moveStart() {
+    this._moveInProgress = true;
+  },
+  _moveEnd: function _moveEnd(e) {
+    this._moveInProgress = false;
+    this._hardMove = e.hard;
+    this.ProcessView();
+  },
+  _zoomStart: function _zoomStart() {
+    this._zoomInProgress = true;
+  },
+  _zoomEnd: function _zoomEnd() {
+    this._zoomInProgress = false;
+    this.ProcessView();
+  },
+  ProcessView: function ProcessView() {
+    var _this = this;
+
+    if (!this._map || this._zoomInProgress || this._moveInProgress) {
+      return;
+    }
+
+    var map = this._map,
+        bounds = map.getBounds(),
+        zoom = Math.floor(map.getZoom()),
+        marginRatio = this.clusterMargin / this.Cluster.Size,
+        resetIcons = this._resetIcons;
+    var southWest = bounds.getSouthWest(),
+        northEast = bounds.getNorthEast();
+    var clusters = this.Cluster.ProcessView({
+      minLat: southWest.lat,
+      minLng: southWest.lng,
+      maxLat: northEast.lat,
+      maxLng: northEast.lng
+    });
+    var objectsOnMap = this._objectsOnMap,
+        newObjectsOnMap = [],
+        markersOnMap = new Array(objectsOnMap.length);
+
+    for (var i = 0, l = objectsOnMap.length; i < l; ++i) {
+      var marker = objectsOnMap[i].data._leafletMarker;
+      markersOnMap[i] = marker;
+      marker._removeFromMap = true;
+    }
+
+    var clusterCreationList = [];
+    var clusterCreationListPopOne = [];
+    var opacityUpdateList = [];
+    var workingList = [];
+
+    for (i = 0, l = clusters.length; i < l; ++i) {
+      var icluster = clusters[i],
+          iclusterData = icluster.data;
+      var latMargin = (icluster.bounds.maxLat - icluster.bounds.minLat) * marginRatio,
+          lngMargin = (icluster.bounds.maxLng - icluster.bounds.minLng) * marginRatio;
+
+      for (var j = 0, ll = workingList.length; j < ll; ++j) {
+        var c = workingList[j];
+
+        if (c.bounds.maxLng < icluster.bounds.minLng) {
+          workingList.splice(j, 1);
+          --j;
+          --ll;
+          continue;
+        }
+
+        var oldMaxLng = c.averagePosition.lng + lngMargin,
+            oldMinLat = c.averagePosition.lat - latMargin,
+            oldMaxLat = c.averagePosition.lat + latMargin,
+            newMinLng = icluster.averagePosition.lng - lngMargin,
+            newMinLat = icluster.averagePosition.lat - latMargin,
+            newMaxLat = icluster.averagePosition.lat + latMargin;
+
+        if (oldMaxLng > newMinLng && oldMaxLat > newMinLat && oldMinLat < newMaxLat) {
+          iclusterData._leafletCollision = true;
+          c.ApplyCluster(icluster);
+          break;
+        }
+      }
+
+      if (!iclusterData._leafletCollision) {
+        workingList.push(icluster);
+      }
+    }
+
+    clusters.forEach(function (cluster) {
+      var m = undefined;
+      var data = cluster.data;
+
+      if (data._leafletCollision) {
+        data._leafletCollision = false;
+        data._leafletOldPopulation = 0;
+        data._leafletOldHashCode = 0;
+        return;
+      }
+
+      var position = new L.LatLng(cluster.averagePosition.lat, cluster.averagePosition.lng);
+      var oldMarker = data._leafletMarker;
+
+      if (oldMarker) {
+        if (cluster.population === 1 && data._leafletOldPopulation === 1 && cluster.hashCode === oldMarker._hashCode) {
+          if (resetIcons || oldMarker._zoomLevel !== zoom || cluster.lastMarker.data.forceIconRedraw) {
+            _this.PrepareLeafletMarker(oldMarker, cluster.lastMarker.data, cluster.lastMarker.category);
+
+            if (cluster.lastMarker.data.forceIconRedraw) {
+              cluster.lastMarker.data.forceIconRedraw = false;
+            }
+          }
+
+          oldMarker.setLatLng(position);
+          m = oldMarker;
+        } else if (cluster.population > 1 && data._leafletOldPopulation > 1 && (oldMarker._zoomLevel === zoom || data._leafletPosition.equals(position))) {
+          oldMarker.setLatLng(position);
+
+          if (resetIcons || cluster.population != data._leafletOldPopulation || cluster.hashCode !== data._leafletOldHashCode) {
+            var boundsCopy = {};
+            L.Util.extend(boundsCopy, cluster.bounds);
+            oldMarker._leafletClusterBounds = boundsCopy;
+            oldMarker.setIcon(_this.BuildLeafletClusterIcon(cluster));
+          }
+
+          data._leafletOldPopulation = cluster.population;
+          data._leafletOldHashCode = cluster.hashCode;
+          m = oldMarker;
+        }
+      }
+
+      if (!m) {
+        if (cluster.population === 1) {
+          clusterCreationListPopOne.push(cluster);
+        } else {
+          clusterCreationList.push(cluster);
+        }
+
+        data._leafletPosition = position;
+        data._leafletOldPopulation = cluster.population;
+        data._leafletOldHashCode = cluster.hashCode;
+      } else {
+        m._removeFromMap = false;
+        newObjectsOnMap.push(cluster);
+        m._zoomLevel = zoom;
+        m._hashCode = cluster.hashCode;
+        m._population = cluster.population;
+        data._leafletMarker = m;
+        data._leafletPosition = position;
+      }
+    });
+    clusterCreationList = clusterCreationListPopOne.concat(clusterCreationList);
+
+    for (i = 0, l = objectsOnMap.length; i < l; ++i) {
+      icluster = objectsOnMap[i];
+      var idata = icluster.data;
+      marker = idata._leafletMarker;
+
+      if (idata._leafletMarker._removeFromMap) {
+        var remove = true;
+
+        if (marker._zoomLevel === zoom) {
+          var pa = icluster.averagePosition;
+          latMargin = (icluster.bounds.maxLat - icluster.bounds.minLat) * marginRatio, lngMargin = (icluster.bounds.maxLng - icluster.bounds.minLng) * marginRatio;
+
+          for (j = 0, ll = clusterCreationList.length; j < ll; ++j) {
+            var jcluster = clusterCreationList[j],
+                jdata = jcluster.data;
+
+            if (marker._population === 1 && jcluster.population === 1 && marker._hashCode === jcluster.hashCode) {
+              if (resetIcons || jcluster.lastMarker.data.forceIconRedraw) {
+                this.PrepareLeafletMarker(marker, jcluster.lastMarker.data, jcluster.lastMarker.category);
+
+                if (jcluster.lastMarker.data.forceIconRedraw) {
+                  jcluster.lastMarker.data.forceIconRedraw = false;
+                }
+              }
+
+              marker.setLatLng(jdata._leafletPosition);
+              remove = false;
+            } else {
+              var pb = jcluster.averagePosition;
+              var oldMinLng = pa.lng - lngMargin,
+                  newMaxLng = pb.lng + lngMargin;
+              oldMaxLng = pa.lng + lngMargin;
+              oldMinLat = pa.lat - latMargin;
+              oldMaxLat = pa.lat + latMargin;
+              newMinLng = pb.lng - lngMargin;
+              newMinLat = pb.lat - latMargin;
+              newMaxLat = pb.lat + latMargin;
+
+              if (marker._population > 1 && jcluster.population > 1 && oldMaxLng > newMinLng && oldMinLng < newMaxLng && oldMaxLat > newMinLat && oldMinLat < newMaxLat) {
+                marker.setLatLng(jdata._leafletPosition);
+                marker.setIcon(this.BuildLeafletClusterIcon(jcluster));
+                var poisson = {};
+                L.Util.extend(poisson, jcluster.bounds);
+                marker._leafletClusterBounds = poisson;
+                jdata._leafletOldPopulation = jcluster.population;
+                jdata._leafletOldHashCode = jcluster.hashCode;
+                marker._population = jcluster.population;
+                remove = false;
+              }
+            }
+
+            if (!remove) {
+              jdata._leafletMarker = marker;
+              marker._removeFromMap = false;
+              newObjectsOnMap.push(jcluster);
+              clusterCreationList.splice(j, 1);
+              --j;
+              --ll;
+              break;
+            }
+          }
+        }
+
+        if (remove) {
+          if (!marker._removeFromMap) console.error("wtf");
+        }
+      }
+    }
+
+    for (i = 0, l = clusterCreationList.length; i < l; ++i) {
+      icluster = clusterCreationList[i], idata = icluster.data;
+      var iposition = idata._leafletPosition;
+      var creationMarker;
+
+      if (icluster.population === 1) {
+        creationMarker = this.BuildLeafletMarker(icluster.lastMarker, iposition);
+      } else {
+        creationMarker = this.BuildLeafletCluster(icluster, iposition);
+      }
+
+      creationMarker.addTo(map);
+      creationMarker.setOpacity(0);
+      opacityUpdateList.push(creationMarker);
+      idata._leafletMarker = creationMarker;
+      creationMarker._zoomLevel = zoom;
+      creationMarker._hashCode = icluster.hashCode;
+      creationMarker._population = icluster.population;
+      newObjectsOnMap.push(icluster);
+    }
+
+    window.setTimeout(function () {
+      for (i = 0, l = opacityUpdateList.length; i < l; ++i) {
+        var m = opacityUpdateList[i];
+        if (m._icon) L.DomUtil.addClass(m._icon, "prunecluster-anim");
+        if (m._shadow) L.DomUtil.addClass(m._shadow, "prunecluster-anim");
+        m.setOpacity(1);
+      }
+    }, 1);
+
+    if (this._hardMove) {
+      for (i = 0, l = markersOnMap.length; i < l; ++i) {
+        marker = markersOnMap[i];
+
+        if (marker._removeFromMap) {
+          map.removeLayer(marker);
+        }
+      }
+    } else {
+      if (this._removeTimeoutId !== 0) {
+        window.clearTimeout(this._removeTimeoutId);
+
+        for (i = 0, l = this._markersRemoveListTimeout.length; i < l; ++i) {
+          map.removeLayer(this._markersRemoveListTimeout[i]);
+        }
+      }
+
+      var toRemove = [];
+
+      for (i = 0, l = markersOnMap.length; i < l; ++i) {
+        marker = markersOnMap[i];
+
+        if (marker._removeFromMap) {
+          marker.setOpacity(0);
+          toRemove.push(marker);
+        }
+      }
+
+      if (toRemove.length > 0) {
+        this._removeTimeoutId = window.setTimeout(function () {
+          for (i = 0, l = toRemove.length; i < l; ++i) {
+            map.removeLayer(toRemove[i]);
+          }
+
+          _this._removeTimeoutId = 0;
+        }, 300);
+      }
+
+      this._markersRemoveListTimeout = toRemove;
+    }
+
+    this._objectsOnMap = newObjectsOnMap;
+    this._hardMove = false;
+    this._resetIcons = false;
+  },
+  FitBounds: function FitBounds(withFiltered) {
+    if (withFiltered === void 0) {
+      withFiltered = true;
+    }
+
+    var bounds = this.Cluster.ComputeGlobalBounds(withFiltered);
+
+    if (bounds) {
+      this._map.fitBounds(new L.LatLngBounds(new L.LatLng(bounds.minLat, bounds.maxLng), new L.LatLng(bounds.maxLat, bounds.minLng)));
+    }
+  },
+  GetMarkers: function GetMarkers() {
+    return this.Cluster.GetMarkers();
+  },
+  RedrawIcons: function RedrawIcons(processView) {
+    if (processView === void 0) {
+      processView = true;
+    }
+
+    this._resetIcons = true;
+
+    if (processView) {
+      this.ProcessView();
+    }
+  }
+});
+var PruneClusterLeafletSpiderfier = (L.Layer ? L.Layer : L.Class).extend({
+  _2PI: Math.PI * 2,
+  _circleFootSeparation: 25,
+  _circleStartAngle: Math.PI / 6,
+  _spiralFootSeparation: 28,
+  _spiralLengthStart: 11,
+  _spiralLengthFactor: 5,
+  _spiralCountTrigger: 8,
+  spiderfyDistanceMultiplier: 1,
+  initialize: function initialize(cluster) {
+    this._cluster = cluster;
+    this._currentMarkers = [];
+    this._multiLines = !!L.multiPolyline;
+    this._lines = this._multiLines ? L.multiPolyline([], {
+      weight: 1.5,
+      color: '#222'
+    }) : L.polyline([], {
+      weight: 1.5,
+      color: '#222'
+    });
+  },
+  onAdd: function onAdd(map) {
+    this._map = map;
+
+    this._map.on('overlappingmarkers', this.Spiderfy, this);
+
+    this._map.on('click', this.Unspiderfy, this);
+
+    this._map.on('zoomend', this.Unspiderfy, this);
+  },
+  Spiderfy: function Spiderfy(data) {
+    var _this = this;
+
+    if (data.cluster !== this._cluster) {
+      return;
+    }
+
+    this.Unspiderfy();
+    var markers = data.markers.filter(function (marker) {
+      return !marker.filtered;
+    });
+    this._currentCenter = data.center;
+
+    var centerPoint = this._map.latLngToLayerPoint(data.center);
+
+    var points;
+
+    if (markers.length >= this._spiralCountTrigger) {
+      points = this._generatePointsSpiral(markers.length, centerPoint);
+    } else {
+      if (this._multiLines) {
+        centerPoint.y += 10;
+      }
+
+      points = this._generatePointsCircle(markers.length, centerPoint);
+    }
+
+    var polylines = [];
+    var leafletMarkers = [];
+    var projectedPoints = [];
+
+    for (var i = 0, l = points.length; i < l; ++i) {
+      var pos = this._map.layerPointToLatLng(points[i]);
+
+      var m = this._cluster.BuildLeafletMarker(markers[i], data.center);
+
+      m.setZIndexOffset(5000);
+      m.setOpacity(0);
+
+      this._currentMarkers.push(m);
+
+      this._map.addLayer(m);
+
+      leafletMarkers.push(m);
+      projectedPoints.push(pos);
+    }
+
+    window.setTimeout(function () {
+      for (i = 0, l = points.length; i < l; ++i) {
+        leafletMarkers[i].setLatLng(projectedPoints[i]).setOpacity(1);
+      }
+
+      var startTime = +new Date();
+      var interval = 42,
+          duration = 290;
+      var anim = window.setInterval(function () {
+        polylines = [];
+        var now = +new Date();
+        var d = now - startTime;
+
+        if (d >= duration) {
+          window.clearInterval(anim);
+          stepRatio = 1.0;
+        } else {
+          var stepRatio = d / duration;
+        }
+
+        var center = data.center;
+
+        for (i = 0, l = points.length; i < l; ++i) {
+          var p = projectedPoints[i],
+              diffLat = p.lat - center.lat,
+              diffLng = p.lng - center.lng;
+          polylines.push([center, new L.LatLng(center.lat + diffLat * stepRatio, center.lng + diffLng * stepRatio)]);
+        }
+
+        _this._lines.setLatLngs(polylines);
+      }, interval);
+    }, 1);
+
+    this._lines.setLatLngs(polylines);
+
+    this._map.addLayer(this._lines);
+
+    if (data.marker) {
+      this._clusterMarker = data.marker.setOpacity(0.3);
+    }
+  },
+  _generatePointsCircle: function _generatePointsCircle(count, centerPt) {
+    var circumference = this.spiderfyDistanceMultiplier * this._circleFootSeparation * (2 + count),
+        legLength = circumference / this._2PI,
+        angleStep = this._2PI / count,
+        res = [],
+        i,
+        angle;
+    res.length = count;
+
+    for (i = count - 1; i >= 0; i--) {
+      angle = this._circleStartAngle + i * angleStep;
+      res[i] = new L.Point(Math.round(centerPt.x + legLength * Math.cos(angle)), Math.round(centerPt.y + legLength * Math.sin(angle)));
+    }
+
+    return res;
+  },
+  _generatePointsSpiral: function _generatePointsSpiral(count, centerPt) {
+    var legLength = this.spiderfyDistanceMultiplier * this._spiralLengthStart,
+        separation = this.spiderfyDistanceMultiplier * this._spiralFootSeparation,
+        lengthFactor = this.spiderfyDistanceMultiplier * this._spiralLengthFactor,
+        angle = 0,
+        res = [],
+        i;
+    res.length = count;
+
+    for (i = count - 1; i >= 0; i--) {
+      angle += separation / legLength + i * 0.0005;
+      res[i] = new L.Point(Math.round(centerPt.x + legLength * Math.cos(angle)), Math.round(centerPt.y + legLength * Math.sin(angle)));
+      legLength += this._2PI * lengthFactor / angle;
+    }
+
+    return res;
+  },
+  Unspiderfy: function Unspiderfy() {
+    var _this = this;
+
+    for (var i = 0, l = this._currentMarkers.length; i < l; ++i) {
+      this._currentMarkers[i].setLatLng(this._currentCenter).setOpacity(0);
+    }
+
+    var markers = this._currentMarkers;
+    window.setTimeout(function () {
+      for (i = 0, l = markers.length; i < l; ++i) {
+        _this._map.removeLayer(markers[i]);
+      }
+    }, 300);
+    this._currentMarkers = [];
+
+    this._map.removeLayer(this._lines);
+
+    if (this._clusterMarker) {
+      this._clusterMarker.setOpacity(1);
+    }
+  },
+  onRemove: function onRemove(map) {
+    this.Unspiderfy();
+    map.off('overlappingmarkers', this.Spiderfy, this);
+    map.off('click', this.Unspiderfy, this);
+    map.off('zoomend', this.Unspiderfy, this);
+  }
+});
+// EXTERNAL MODULE: ./node_modules/leaflet/dist/images/marker-icon.png
+var marker_icon = __webpack_require__("6397");
+var marker_icon_default = /*#__PURE__*/__webpack_require__.n(marker_icon);
+
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PruneCluster.vue?vue&type=script&lang=js&
+
+
+
+
+
+//
+//
+//
+//
+
+
+
+var props = ['mapRef', 'items', 'setIcon'];
+/* harmony default export */ var PruneClustervue_type_script_lang_js_ = ({
+  name: "PruneCluster",
+  props: props,
+  data: function data() {
+    return {
+      itemsOrDefault: [],
+      pruneCluster: undefined,
+      selectedItem: undefined
+    };
+  },
+  computed: {
+    setIconOrDefault: function setIconOrDefault() {
+      var i = this.setIcon;
+      var defaultIcon = leaflet_src_default.a.icon({
+        iconUrl: marker_icon_default.a,
+        iconSize: [29, 29]
+      });
+      return i ? i : defaultIcon;
+    },
+    setIconMarkerClusterOrDefault: function setIconMarkerClusterOrDefault() {
+      var i = this.setIconMarkerCluster;
+      var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#FF0000', '#ada59a', '#3e647e'],
+          pi2 = Math.PI * 2;
+      leaflet_src_default.a.Icon.MarkerCluster = leaflet_src_default.a.Icon.extend({
+        options: {
+          // iconUrl: '/static/icons/icon_cluster_yellow.svg',
+          iconSize: new leaflet_src_default.a.Point(44, 44),
+          className: 'prunecluster leaflet-markercluster-icon'
+        },
+        createIcon: function createIcon() {
+          // based on L.Icon.Canvas from shramov/leaflet-plugins (BSD licence)
+          var e = document.createElement('canvas');
+
+          this._setIconStyles(e, 'icon');
+
+          var s = this.options.iconSize;
+          e.width = s.x;
+          e.height = s.y;
+          this.draw(e.getContext('2d'), s.x, s.y);
+          return e;
+        },
+        createShadow: function createShadow() {
+          return null;
+        },
+        draw: function draw(canvas) {
+          var start = 0;
+
+          for (var i = 0, l = colors.length; i < l; ++i) {
+            var size = this.stats[i] / this.population;
+
+            if (size > 0) {
+              canvas.beginPath();
+              canvas.moveTo(22, 22);
+              canvas.fillStyle = colors[i];
+              var from = start + 0.14,
+                  to = start + size * pi2;
+
+              if (to < from) {
+                from = start;
+              }
+
+              canvas.arc(22, 22, 22, from, to);
+              start = start + size * pi2;
+              canvas.lineTo(22, 22);
+              canvas.fill();
+              canvas.closePath();
+            }
+          }
+
+          canvas.beginPath();
+          canvas.fillStyle = '#a174ac';
+          canvas.arc(22, 22, 18, 0, Math.PI * 2);
+          canvas.fill();
+          canvas.closePath();
+          canvas.fillStyle = 'white';
+          canvas.textAlign = 'center';
+          canvas.textBaseline = 'middle';
+          canvas.font = 'bold 12px sans-serif';
+          canvas.fillText(this.population, 22, 22, 40);
+        }
+      });
+      return i ? i : new leaflet_src_default.a.Icon.MarkerCluster();
+    }
+  },
+  mounted: function mounted() {
+    this.pruneCluster = new PruneClusterForLeaflet();
+    var emitDataFunction = this.emitItem; //trick to be able to access this inside the leaflet function
+
+    var thisVue = this; //--------------------------------- icon Cluster configuration
+
+    this.pruneCluster.PrepareLeafletMarker = function (leafletMarker, data) {
+      leafletMarker.setIcon(thisVue.setIconOrDefault); // we configure the onClick option
+
+      leafletMarker.on('click', function () {
+        emitDataFunction(data, leafletMarker, thisVue.pruneCluster);
+      });
+    }; //--------------------------------- icon Cluster configuration
+
+
+    this.pruneCluster.BuildLeafletClusterIcon = function (cluster) {
+      var e = thisVue.setIconMarkerClusterOrDefault;
+      e.stats = cluster.stats;
+      e.population = cluster.population;
+      return e;
+    };
+
+    var map = this.mapRef.map.mapObject;
+    map.addLayer(this.pruneCluster);
+    this.reDraw();
+  },
+  watch: {
+    items: function items() {
+      if (this.items && is_array_default()(this.items)) {
+        this.itemsOrDefault = this.items;
+        this.reDraw();
+      }
+    }
+  },
+  methods: {
+    emitItem: function emitItem(item, leafletMarker, pruneCluster) {
+      this.$emit('clickOnItem', JSON.parse(stringify_default()(item)), leafletMarker, pruneCluster);
+    },
+    reDraw: function reDraw() {
+      var _this = this;
+
+      // console.log('------------- redraw -------------');
+      // var pruneCluster = new PruneClusterForLeaflet();
+      var pruneCluster = this.pruneCluster;
+      pruneCluster.RemoveMarkers(); // console.log('removed all the markers - number of markers to map: ',this.items.length);
+
+      if (this.itemsOrDefault && is_array_default()(this.itemsOrDefault)) {
+        this.itemsOrDefault.forEach(function (item) {
+          var marker = _this.createMarker(item);
+
+          pruneCluster.RegisterMarker(marker);
+        });
+      }
+    },
+    createMarker: function createMarker(obj) {
+      var parsedObj = JSON.parse(stringify_default()(obj));
+      var marker = new PruneCluster.Marker(parsedObj[this.findLat(parsedObj)], parsedObj[this.findLng(parsedObj)]);
+      marker.data = parsedObj;
+      return marker;
+    },
+    findLat: function findLat(obj) {
+      return keys_default()(obj).find(function (o) {
+        return /lat|LAT|lati|latitude|Latitude/g.test(o);
+      });
+    },
+    findLng: function findLng(obj) {
+      return keys_default()(obj).find(function (o) {
+        return /lng|lon|LON|LNG|long|longitude|Longitude/g.test(o);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/PruneCluster.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_PruneClustervue_type_script_lang_js_ = (PruneClustervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+// CONCATENATED MODULE: ./src/components/PruneCluster.vue
+
+
+
+
+
+/* normalize component */
+
+var component = normalizeComponent(
+  components_PruneClustervue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var components_PruneCluster = (component.exports);
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+
+
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components_PruneCluster);
+
+
+
+/***/ }),
+
 /***/ "fdef":
 /***/ (function(module, exports) {
 
@@ -18039,5 +17495,5 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 
 /***/ })
 
-/******/ });
-//# sourceMappingURL=prune-cluster.js.map
+/******/ })["default"];
+//# sourceMappingURL=prune-cluster.common.js.map

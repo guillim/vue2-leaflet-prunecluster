@@ -5,17 +5,17 @@
     "type": "git",
     "url": "https://github.com/guillim/vue2-leaflet-prunecluster.git"
   },
-  "version": "1.1.1",
+  "version": "1.5.1",
   "author": "guillim",
   "license": "ISC",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build  --target wc --name prune-cluster src/VuejsPruneCluster.vue",
+    "build": "vue-cli-service build  --target lib --name prune-cluster 'src/components/PruneCluster.vue'",
     "lint": "vue-cli-service lint",
     "example": "vue-cli-service serve 'src/mainExample.js'"
   },
-  "main": "dist/prune-cluster.min.js",
+  "main": "dist/prune-cluster.umd.js",
   "keywords": [
     "leaflet",
     "vue",
