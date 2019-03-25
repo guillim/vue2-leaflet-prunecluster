@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/guillim/vue2-leaflet-prunecluster.git"
   },
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": "guillim",
   "license": "ISC",
   "private": false,
