@@ -40,7 +40,8 @@ export default {
 [
  { lng: -1.219482, lat: 47.413220, id: '65y' },
  { lng: -1.219482, lat: 47.413220, id: '65y' }
-] ```
+] 
+```
 
 * The function _doWhateverYouWant_ can simply be
 ``` javascript
@@ -59,7 +60,8 @@ setIcon(){
     iconUrl: '../../static/icons/icon_search_violet.svg',
     iconSize: [29, 29],
   })
-} ```
+} 
+```
 
 
 ## Develop
