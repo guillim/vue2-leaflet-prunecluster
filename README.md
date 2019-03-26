@@ -2,6 +2,12 @@
 
 This is a [prunecluster plugin](https://github.com/SINTEF-9012/PruneCluster) extension for [vue2-leaflet package](https://github.com/KoRiGaN/Vue2Leaflet)
 
+#### Why not using [vue2-leaflet-markercluster](https://github.com/jperelli/vue2-leaflet-markercluster) ?
+In my expericence, vue2-leaflet-markercluster was really slow when plotting more than 10.000 markers. So I had to find a faster alternative for these many markers cases.  
+Ex: Speed comparision for 10.000 markers:
+- markercluster: 15 seconds
+- prunecluster: 2 seconds
+
 ## Install
 
     npm install --save vue2-leaflet-prunecluster
